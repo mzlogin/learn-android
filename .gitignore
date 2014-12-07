@@ -1,6 +1,5 @@
 # workspace common files
 .metadata
-appcompat_v7
 
 # Built application files
 *.apk
@@ -31,3 +30,6 @@ proguard/
 
 # tmp files
 *.swp
+
+# jars imported automation
+*.jar

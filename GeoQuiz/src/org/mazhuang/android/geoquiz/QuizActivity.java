@@ -33,22 +33,27 @@ public class QuizActivity extends Activity {
 	};
 	
 	private int mCurrentIndex = 0;
+	private boolean mIsCheater;
 	
 	private void updateQuestion() {
 //		Log.d(TAG, "updateQuestion() called", new Exception());
 		int question = mQuestionBank[mCurrentIndex].getQuestion();
 		mQuestionTextView.setText(question);
+		mIsCheater = false;
 	}
 	
 	private void checkAnswer(boolean userPressedTrue) {
 		boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();
 		
 		int messageResId = 0;
-		
-		if (userPressedTrue == answerIsTrue) {
-			messageResId = R.string.correct_toast;
+		if (mIsCheater) {
+			messageResId = R.string.judgment_toast;
 		} else {
-			messageResId = R.string.incorrect_toast;
+			if (userPressedTrue == answerIsTrue) {
+				messageResId = R.string.correct_toast;
+			} else {
+				messageResId = R.string.incorrect_toast;
+			}
 		}
 		
 		Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
@@ -120,7 +125,10 @@ public class QuizActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(QuizActivity.this, CheatActivity.class);
-				startActivity(i);
+				boolean answerIsTrue = mQuestionBank[mCurrentIndex].isTrueQuestion();
+				i.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+//				startActivity(i);
+				startActivityForResult(i, 0);
 			}
 		});
         
@@ -181,5 +189,13 @@ public class QuizActivity extends Activity {
     	super.onSaveInstanceState(outState);
 //    	Log.d(TAG, "onSaveInstanceState(Bundle) called");
     	outState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if (data == null) {
+    		return;
+    	}
+    	mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
     }
 }

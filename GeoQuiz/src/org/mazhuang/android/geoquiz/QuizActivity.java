@@ -1,6 +1,7 @@
 package org.mazhuang.android.geoquiz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ public class QuizActivity extends Activity {
 	private ImageButton mPrevButton;
 	private ImageButton mNextButton;
 	private TextView mQuestionTextView;
+	private Button mCheatButton;
 	
 	private TrueFalse[] mQuestionBank = new TrueFalse[] {
 			new TrueFalse(R.string.question_africa, false),
@@ -109,6 +111,16 @@ public class QuizActivity extends Activity {
 			public void onClick(View v) {
 				mCurrentIndex = (mCurrentIndex + mQuestionBank.length - 1) % mQuestionBank.length;
 				updateQuestion();
+			}
+		});
+        
+        mCheatButton = (Button)findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+				startActivity(i);
 			}
 		});
         

@@ -32,4 +32,4 @@ proguard/
 *.swp
 
 # jars imported automation
-*.jar
+# *.jar

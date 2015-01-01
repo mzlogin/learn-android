@@ -1,5 +1,8 @@
 package org.mazhuang.android.criminalintent;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -48,7 +51,9 @@ public class CrimeFragment extends Fragment {
 		});
 		
 		mDateButton = (Button)v.findViewById(R.id.crime_date);
-		mDateButton.setText(mCrime.getDate().toString());
+		String format = new String("EEEE, MMM dd, yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.US);
+		mDateButton.setText(sdf.format(mCrime.getDate()));
 		mDateButton.setEnabled(false);
 		
 		mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);

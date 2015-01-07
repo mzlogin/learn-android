@@ -24,6 +24,11 @@ public class CrimePagerActivity extends FragmentActivity {
 		mCrimes = CrimeLab.get(this).getCrimes();
 		
 		FragmentManager fm = getSupportFragmentManager();
+		/*
+		 * FragmentStatePagerAdpater与FragmentPagerAdapter的区别是
+		 * 前者只保留了当前view前后的实例（Fragment的Bundle保存着），
+		 * 后者保存了所有view实例。
+		 */
 		mViewPager.setAdapter(new FragmentStatePagerAdapter(fm) {
 			
 			@Override

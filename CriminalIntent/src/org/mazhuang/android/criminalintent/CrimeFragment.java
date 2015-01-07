@@ -24,7 +24,11 @@ import android.widget.EditText;
 public class CrimeFragment extends Fragment {
 	public static final String EXTRA_CRIME_ID = "org.mazhuang.android.criminalintent.crime_id";
 	private static final String DIALOG_DATE = "date";
+	private static final String DIALOG_TIME = "time";
+	private static final String DIALOG_DATE_OR_TIME = "date_or_time";
 	private static final int REQUEST_DATE = 0;
+	private static final int REQUEST_TIME = 1;
+	private static final int REQUEST_DATE_OR_TIME = 2;
 	private Crime mCrime;
 	private EditText mTitleField;
 	private Button mDateButton;
@@ -67,9 +71,9 @@ public class CrimeFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getActivity().getSupportFragmentManager();
-				DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
-				dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
-				dialog.show(fm, DIALOG_DATE);
+				DateOrTimeFragment dialog = new DateOrTimeFragment();
+				dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE_OR_TIME);
+				dialog.show(fm, DIALOG_DATE_OR_TIME);
 			}
 		});
 		
@@ -96,7 +100,25 @@ public class CrimeFragment extends Fragment {
 			Date date = (Date)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
 			mCrime.setDate(date);
 			updateDate();
+		} else if (requestCode == REQUEST_TIME) {
+			Date date = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_DATE);
+			mCrime.setDate(date);
+			updateDate();
 		}
+	}
+	
+	public void pickDate() {
+		FragmentManager fm = getActivity().getSupportFragmentManager();
+		DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
+		dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
+		dialog.show(fm, DIALOG_DATE);
+	}
+	
+	public void pickTime() {
+		FragmentManager fm = getActivity().getSupportFragmentManager();
+		TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
+		dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
+		dialog.show(fm, DIALOG_TIME);
 	}
 	
 	private void updateDate() {

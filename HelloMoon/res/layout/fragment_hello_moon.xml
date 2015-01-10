@@ -11,6 +11,12 @@
         android:scaleType="centerInside"
         android:layout_weight="1" />
     
+    <VideoView     
+        android:id="@+id/hellomoon_playVideoView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:visibility="gone"/>
+    
     <TableRow 
         android:gravity="center|bottom"
         android:layout_weight="0">
@@ -34,5 +40,11 @@
             android:text="@string/hellomoon_stop" />"
         
     </TableRow>
+    
+    <Button
+        android:id="@+id/hellomoon_playVideoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hellomoon_playvideo" />
 
 </TableLayout>

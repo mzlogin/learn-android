@@ -1,5 +1,6 @@
 package org.mazhuang.android.hellomoon;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +14,10 @@ public class HelloMoonFragment extends Fragment {
 	private Button mPlayButton;
 	private Button mStopButton;
 	private Button mPauseButton;
+	private Button mPlayVideoButton;
 	private AudioPlayer mPlayer = new AudioPlayer();
+	
+	private static final String PLAY_VIDEO = "play_video";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
@@ -42,6 +46,16 @@ public class HelloMoonFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				mPlayer.stop();
+			}
+		});
+		
+		mPlayVideoButton = (Button)v.findViewById(R.id.hellomoon_playVideoButton);
+		mPlayVideoButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				PlayVideoFragment fragment = new PlayVideoFragment();
+				fragment.show(getActivity().getSupportFragmentManager(), PLAY_VIDEO);
 			}
 		});
 		

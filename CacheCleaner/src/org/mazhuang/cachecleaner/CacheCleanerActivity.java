@@ -1,14 +1,16 @@
 package org.mazhuang.cachecleaner;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class CacheCleanerActivity extends Activity {
+public class CacheCleanerActivity extends FragmentActivity {
 	
 	private Button mCleanButton;
 
@@ -24,6 +26,16 @@ public class CacheCleanerActivity extends Activity {
 				
 			}
 		});
+		
+		FragmentManager fm = getSupportFragmentManager();
+		Fragment fragment = fm.findFragmentById(R.id.cacheListFragmentContainer);
+		
+		if (fragment == null) {
+			fragment = new CacheListFragment();
+			fm.beginTransaction()
+				.add(R.id.cacheListFragmentContainer, fragment)
+				.commit();
+		}
 	}
 
 	@Override

@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">CacheCleaner</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="clean_button">Clean!</string>
+    <string name="null_string">null</string>
 
 </resources>

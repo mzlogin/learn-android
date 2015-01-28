@@ -13,8 +13,14 @@
         android:id="@+id/clean_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/clean_button" />
+        android:text="@string/clean_button_scan" />
     
+    <TextView
+        android:id="@+id/clean_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/null_string" />
+        
     <FrameLayout 
         android:id="@+id/cacheListFragmentContainer"
         android:layout_width="match_parent"

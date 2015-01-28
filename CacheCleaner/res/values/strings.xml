@@ -5,6 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="clean_button_clean">Clean!</string>
     <string name="clean_button_scan">Scan!</string>
+    <string name="scan_start">开始扫描</string>
+    <string name="scan_finish">扫描完成</string>
     <string name="null_string">null</string>
+    
 
 </resources>

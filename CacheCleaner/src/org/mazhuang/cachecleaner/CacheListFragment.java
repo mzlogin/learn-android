@@ -24,6 +24,10 @@ public class CacheListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		updateUI();
+	}
+	
+	public void updateUI() {
 		((CacheAdapter)getListAdapter()).notifyDataSetChanged();
 	}
 	

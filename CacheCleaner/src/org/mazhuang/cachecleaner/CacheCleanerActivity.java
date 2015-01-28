@@ -28,11 +28,14 @@ public class CacheCleanerActivity extends FragmentActivity implements ICacheScan
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 				case MSG_HANDLER_SCAN_START:
-					mCleanInfoTextView.setText("0");
+					mCleanInfoTextView.setText(R.string.scan_start);
 					break;
 					
 				case MSG_HANDLER_SCAN_FINISH:
-					mCleanInfoTextView.setText("100");
+					mCleanInfoTextView.setText(R.string.scan_finish);
+					FragmentManager fm = getSupportFragmentManager();
+					CacheListFragment fragment = (CacheListFragment)fm.findFragmentById(R.id.cacheListFragmentContainer);
+					fragment.updateUI();
 					break;
 					
 				case MSG_HANDLER_SCAN_PROGRESS:

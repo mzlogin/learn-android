@@ -28,7 +28,7 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 	protected Boolean doInBackground(Void... params) {
 		mCallBack.onScanStart();
 		
-		ArrayList<Cache> caches = CacheLab.get(mAppContext).getCaches();
+		ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
 		caches.clear();
 		
 		// step1: get all installed packages
@@ -68,7 +68,7 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 		String[] sucStrs = result.successMsg.split("\t");
 		
 		for (String str : sucStrs) {
-			Cache cache = new Cache();
+			CacheInfo cache = new CacheInfo();
 			cache.setPackageName(str);
 			caches.add(cache);
 		}

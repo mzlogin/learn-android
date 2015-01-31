@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class CacheListFragment extends ListFragment {
-	private ArrayList<Cache> mCaches;
+	private ArrayList<CacheInfo> mCaches;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,8 +31,8 @@ public class CacheListFragment extends ListFragment {
 		((CacheAdapter)getListAdapter()).notifyDataSetChanged();
 	}
 	
-	private class CacheAdapter extends ArrayAdapter<Cache> {
-		public CacheAdapter(ArrayList<Cache> caches) {
+	private class CacheAdapter extends ArrayAdapter<CacheInfo> {
+		public CacheAdapter(ArrayList<CacheInfo> caches) {
 			super(getActivity(), 0, caches);
 		}
 		
@@ -43,7 +43,7 @@ public class CacheListFragment extends ListFragment {
 						.inflate(R.layout.list_item_cache, null);
 			}
 			
-			Cache c = getItem(position);
+			CacheInfo c = getItem(position);
 			
 			TextView packageNameTextView = (TextView)convertView.findViewById(R.id.cache_list_item_packageName);
 			packageNameTextView.setText(c.getPackageName());

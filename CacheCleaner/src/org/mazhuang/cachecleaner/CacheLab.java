@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import android.content.Context;
 
 public class CacheLab {
-	private ArrayList<Cache> mCaches;
+	private ArrayList<CacheInfo> mCaches;
 	private static CacheLab sCacheLab;
 	private Context mAppContext;
 	
 	private CacheLab(Context appContext) {
 		mAppContext = appContext;
-		mCaches = new ArrayList<Cache>();
+		mCaches = new ArrayList<CacheInfo>();
 		
 //		for (int i = 0; i < 100; i++) {
 //			Cache c = new Cache();
@@ -34,7 +34,7 @@ public class CacheLab {
 		return sCacheLab;
 	}
 	
-	public ArrayList<Cache> getCaches() {
+	public ArrayList<CacheInfo> getCaches() {
 		return mCaches;
 	}
 }

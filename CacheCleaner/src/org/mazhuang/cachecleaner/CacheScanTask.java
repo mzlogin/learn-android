@@ -1,24 +1,24 @@
 package org.mazhuang.cachecleaner;
 
-import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.mazhuang.cachecleaner.ShellUtils.CommandResult;
+import android.content.pm.IPackageStatsObserver;
+import android.content.pm.PackageStats;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
+import android.os.RemoteException;
 
 public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 	
 	private ICacheScanCallBack mCallBack;
 	private Context mAppContext;
 	
-	private static final String GET_DIR_SIZE_COMMAND = "du -d 2 ";
-
 	public CacheScanTask(Context context, ICacheScanCallBack callBack) {
 		mAppContext = context;
 		mCallBack = callBack;
@@ -31,46 +31,14 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 		ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
 		caches.clear();
 		
-		// step1: get all installed packages
 		PackageManager pm = mAppContext.getPackageManager();
 		List<ApplicationInfo> installedPackages = pm.getInstalledApplications(PackageManager.GET_GIDS);
 		
-		// step2: scan
-		boolean isAboveFroyo = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.FROYO;
-		ArrayList<String> commands = new ArrayList<String>();
-		for (ApplicationInfo appInfo : installedPackages) {
-			try {
-				Context context = mAppContext.createPackageContext(appInfo.packageName, 
-						Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);
-				File filesDir = context.getFilesDir();
-				File cacheDir = context.getCacheDir();
-				
-				String command = GET_DIR_SIZE_COMMAND + filesDir;
-				commands.add(command);
-				
-				command = GET_DIR_SIZE_COMMAND + cacheDir;
-				commands.add(command);
-				
-				if (isAboveFroyo) {
-					// crash at Nexus 4  v4.4.4
-//					File externalCacheDir = context.getExternalCacheDir();
-//					command = GET_DIR_SIZE_COMMAND + externalCacheDir;
-//					commands.add(command);
-				}
-			} catch (NameNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		CommandResult result = ShellUtils.execCommand(commands, true, true);
-		
-		// step3: parser output
-		String[] sucStrs = result.successMsg.split("\t");
-		
-		for (String str : sucStrs) {
-			CacheInfo cache = new CacheInfo();
-			cache.setPackageName(str);
-			caches.add(cache);
+		IPackageStatsObserver.Stub observer = new PackageSizeObserver();
+		for (int i = 0; i < installedPackages.size(); i++) {
+			ApplicationInfo appInfo = installedPackages.get(i);
+			getPackageInfo(appInfo.packageName, observer);
+			mCallBack.onScanProgress(100 * i / installedPackages.size());
 		}
 		
 		return true;
@@ -79,5 +47,35 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean isRoot) {
 		mCallBack.onScanFinish();
+	}
+	
+	public void getPackageInfo(String packageName, IPackageStatsObserver.Stub observer) {
+		try {
+			PackageManager pm = mAppContext.getPackageManager();
+			Method getPackageSizeInfo = pm.getClass()
+					.getMethod("getPackageSizeInfo", String.class, IPackageStatsObserver.class);
+			
+			getPackageSizeInfo.invoke(pm, packageName, observer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private class PackageSizeObserver extends IPackageStatsObserver.Stub {
+
+		@Override
+		public void onGetStatsCompleted(PackageStats packageStats, boolean succeeded)
+				throws RemoteException {
+			if (packageStats == null || !succeeded) {
+				return;
+			}
+			CacheInfo cacheInfo = new CacheInfo();
+			cacheInfo.setPackageName(packageStats.packageName);
+			cacheInfo.setCacheSize(packageStats.cacheSize);
+			
+			ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
+			caches.add(cacheInfo);
+		}
+		
 	}
 }

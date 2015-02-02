@@ -19,7 +19,7 @@
         android:text="@string/null_string" />
     
     <TextView 
-        android:id="@+id/cache_list_item_path"
+        android:id="@+id/cache_list_item_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/cache_list_item_packageName"

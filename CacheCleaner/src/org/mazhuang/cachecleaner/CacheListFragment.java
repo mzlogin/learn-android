@@ -48,11 +48,11 @@ public class CacheListFragment extends ListFragment {
 			TextView packageNameTextView = (TextView)convertView.findViewById(R.id.cache_list_item_packageName);
 			packageNameTextView.setText(c.getPackageName());
 			
-			TextView pathTextView = (TextView)convertView.findViewById(R.id.cache_list_item_path);
-			pathTextView.setText(c.getPath());
+			TextView pathTextView = (TextView)convertView.findViewById(R.id.cache_list_item_size);
+			pathTextView.setText("" + c.getCacheSize());
 			
 			CheckBox recommentCheckBox = (CheckBox)convertView.findViewById(R.id.cache_list_item_recommandCheckBox);
-			recommentCheckBox.setChecked(c.isRecommandClean());
+			recommentCheckBox.setChecked(true);
 			
 			return convertView;
 		}

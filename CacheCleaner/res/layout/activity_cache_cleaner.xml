@@ -10,10 +10,16 @@
     android:orientation="vertical" >
     
     <Button
-        android:id="@+id/clean_button"
+        android:id="@+id/scan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/clean_button_scan" />
+    
+    <Button 
+        android:id="@+id/clean_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clean_button_clean" />
     
     <TextView
         android:id="@+id/clean_info_text"

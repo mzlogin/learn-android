@@ -4,15 +4,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mazhuang.cachecleaner.ShellUtils.CommandResult;
-import android.content.pm.IPackageStatsObserver;
-import android.content.pm.PackageStats;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.IPackageStatsObserver;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageStats;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 	
@@ -60,21 +61,31 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 			e.printStackTrace();
 		}
 	}
-	
-	private class PackageSizeObserver extends IPackageStatsObserver.Stub {
 
+	private class PackageSizeObserver extends IPackageStatsObserver.Stub {
+		
+		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 		@Override
 		public void onGetStatsCompleted(PackageStats packageStats, boolean succeeded)
 				throws RemoteException {
 			if (packageStats == null || !succeeded) {
 				return;
 			}
+			Log.d("PackageSizeObserver", ""+packageStats.packageName + " " + packageStats.cacheSize + " " + packageStats.externalCacheSize);
 			CacheInfo cacheInfo = new CacheInfo();
 			cacheInfo.setPackageName(packageStats.packageName);
 			cacheInfo.setCacheSize(packageStats.cacheSize);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				cacheInfo.setCacheSize(packageStats.cacheSize + packageStats.externalCacheSize);
+			}
+			cacheInfo.setChecked(true);
+			
+			Log.d("PackageSizeObserver", ""+cacheInfo.getPackageName() + " " + cacheInfo.getCacheSize());
 			
 			ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
-			caches.add(cacheInfo);
+			if (cacheInfo.getCacheSize() != 0) {
+				caches.add(cacheInfo);
+			}
 		}
 		
 	}

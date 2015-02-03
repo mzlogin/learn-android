@@ -9,6 +9,7 @@ package org.mazhuang.cachecleaner;
 public class CacheInfo {
 	private String mPackageName;
 	private long mCacheSize;
+	private boolean mChecked;
 	public String getPackageName() {
 		return mPackageName;
 	}
@@ -20,5 +21,11 @@ public class CacheInfo {
 	}
 	public void setCacheSize(long cacheSize) {
 		mCacheSize = cacheSize;
+	}
+	public boolean isChecked() {
+		return mChecked;
+	}
+	public void setChecked(boolean checked) {
+		mChecked = checked;
 	}
 }

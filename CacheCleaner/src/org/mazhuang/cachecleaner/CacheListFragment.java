@@ -8,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class CacheListFragment extends ListFragment {
-	private ArrayList<CacheInfo> mCaches;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mCaches = CacheLab.get(getActivity()).getCaches();
 		
-		CacheAdapter adapter = new CacheAdapter(mCaches);
+		CacheAdapter adapter = new CacheAdapter(CacheLab.get(getActivity()).getCaches());
 		setListAdapter(adapter);
 	}
 	
@@ -43,16 +43,26 @@ public class CacheListFragment extends ListFragment {
 						.inflate(R.layout.list_item_cache, null);
 			}
 			
-			CacheInfo c = getItem(position);
+			CacheInfo cacheInfo = getItem(position);
 			
 			TextView packageNameTextView = (TextView)convertView.findViewById(R.id.cache_list_item_packageName);
-			packageNameTextView.setText(c.getPackageName());
+			packageNameTextView.setText(cacheInfo.getPackageName());
 			
 			TextView pathTextView = (TextView)convertView.findViewById(R.id.cache_list_item_size);
-			pathTextView.setText("" + c.getCacheSize());
+			pathTextView.setText("" + cacheInfo.getCacheSize());
 			
-			CheckBox recommentCheckBox = (CheckBox)convertView.findViewById(R.id.cache_list_item_recommandCheckBox);
-			recommentCheckBox.setChecked(true);
+			CheckBox recommendCheckBox = (CheckBox)convertView.findViewById(R.id.cache_list_item_recommandCheckBox);
+			recommendCheckBox.setChecked(cacheInfo.isChecked());
+			recommendCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					CacheInfo cacheInfo = (CacheInfo)(((View)(buttonView.getParent())).getTag());
+					cacheInfo.setChecked(isChecked);
+				}
+			});
+			
+			convertView.setTag(cacheInfo);
 			
 			return convertView;
 		}

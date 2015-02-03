@@ -52,17 +52,16 @@ public class CacheListFragment extends ListFragment {
 			pathTextView.setText("" + cacheInfo.getCacheSize());
 			
 			CheckBox recommendCheckBox = (CheckBox)convertView.findViewById(R.id.cache_list_item_recommandCheckBox);
+			recommendCheckBox.setTag(cacheInfo);
 			recommendCheckBox.setChecked(cacheInfo.isChecked());
 			recommendCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 				
 				@Override
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					CacheInfo cacheInfo = (CacheInfo)(((View)(buttonView.getParent())).getTag());
+					CacheInfo cacheInfo = (CacheInfo)(buttonView.getTag());
 					cacheInfo.setChecked(isChecked);
 				}
 			});
-			
-			convertView.setTag(cacheInfo);
 			
 			return convertView;
 		}

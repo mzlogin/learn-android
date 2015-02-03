@@ -19,6 +19,8 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 	
 	private ICacheScanCallBack mCallBack;
 	private Context mAppContext;
+	private int mScanCount = 0;
+	private int mTotalCount = 0;
 	
 	public CacheScanTask(Context context, ICacheScanCallBack callBack) {
 		mAppContext = context;
@@ -31,15 +33,18 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 		
 		ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
 		caches.clear();
+		mScanCount = 0;
+		mTotalCount = 0;
 		
 		PackageManager pm = mAppContext.getPackageManager();
 		List<ApplicationInfo> installedPackages = pm.getInstalledApplications(PackageManager.GET_GIDS);
 		
 		IPackageStatsObserver.Stub observer = new PackageSizeObserver();
-		for (int i = 0; i < installedPackages.size(); i++) {
+		mTotalCount = installedPackages.size();
+		for (int i = 0; i < mTotalCount; i++) {
 			ApplicationInfo appInfo = installedPackages.get(i);
+			// NOTICE!This call is not synchronize
 			getPackageInfo(appInfo.packageName, observer);
-			mCallBack.onScanProgress(100 * i / installedPackages.size());
 		}
 		
 		return true;
@@ -68,25 +73,26 @@ public class CacheScanTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		public void onGetStatsCompleted(PackageStats packageStats, boolean succeeded)
 				throws RemoteException {
+			mScanCount++;
 			if (packageStats == null || !succeeded) {
-				return;
+			} else {
+				mCallBack.onScanProgress((int)(mScanCount * 100 / mTotalCount));
+				CacheInfo cacheInfo = new CacheInfo();
+				cacheInfo.setPackageName(packageStats.packageName);
+				cacheInfo.setCacheSize(packageStats.cacheSize);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					cacheInfo.setCacheSize(packageStats.cacheSize + packageStats.externalCacheSize);
+				}
+				cacheInfo.setChecked(true);
+				
+				ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
+				if (cacheInfo.getCacheSize() != 0) {
+					caches.add(cacheInfo);
+				}
 			}
-			Log.d("PackageSizeObserver", ""+packageStats.packageName + " " + packageStats.cacheSize + " " + packageStats.externalCacheSize);
-			CacheInfo cacheInfo = new CacheInfo();
-			cacheInfo.setPackageName(packageStats.packageName);
-			cacheInfo.setCacheSize(packageStats.cacheSize);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				cacheInfo.setCacheSize(packageStats.cacheSize + packageStats.externalCacheSize);
-			}
-			cacheInfo.setChecked(true);
-			
-			Log.d("PackageSizeObserver", ""+cacheInfo.getPackageName() + " " + cacheInfo.getCacheSize());
-			
-			ArrayList<CacheInfo> caches = CacheLab.get(mAppContext).getCaches();
-			if (cacheInfo.getCacheSize() != 0) {
-				caches.add(cacheInfo);
+			if (mScanCount == mTotalCount) {
+				mCallBack.onScanFinish();
 			}
 		}
-		
 	}
 }

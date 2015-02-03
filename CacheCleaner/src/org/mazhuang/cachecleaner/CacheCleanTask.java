@@ -2,9 +2,6 @@ package org.mazhuang.cachecleaner;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
-import org.mazhuang.cachecleaner.ShellUtils.CommandResult;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;

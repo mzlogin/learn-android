@@ -13,5 +13,10 @@
     <string name="date_picker">Change Date</string>
     <string name="time_picker">Change Time</string>
     <string name="date_or_time">Date Or Time?</string>
+    <string name="new_crime">New Crime</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="subtitle">If you see something, say something.</string>
+    <string name="delete_crime">Delete</string>
 
 </resources>

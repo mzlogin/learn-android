@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,8 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class LayoutScaleActivity extends Activity {
-    
-    private static final String TAG = "LayoutScaleActivity";
     
     private RelativeLayout mTitlePanel;
     private TextView mHelloText;
@@ -69,15 +66,15 @@ public class LayoutScaleActivity extends Activity {
                 float f1 = ((float) SystemClock.currentThreadTimeMillis() - (float) this.mStartTime)
                         / (float) this.mDuration;
                 float factor = 1.0f - f1 * (1.0f - mFactor);
-                lp.height = (int)(mBaseHeight * factor);
-                if ((mFactor < 1.0f && factor > mFactor) || (mFactor >= 1.0f && factor < mFactor)) {
-                    mTitlePanel.setLayoutParams(lp);
-                    Log.d(TAG, "" + mHelloText.getText() + " " + mHelloText.getTextSize() * factor );
-                    mHelloText.setTextSize(mBaseTextSize * factor / TypedValue.COMPLEX_UNIT_SP);
-                    mTitlePanel.post(this);
-                    return;
+                if (!((mFactor < 1.0f && factor > mFactor) || (mFactor >= 1.0f && factor < mFactor))) {
+                	this.isFinished = true;
+                	factor = mFactor;
                 }
-                this.isFinished = true;
+                
+                lp.height = (int)(mBaseHeight * factor);
+                mTitlePanel.setLayoutParams(lp);
+                mHelloText.setTextSize(mBaseTextSize * factor / TypedValue.COMPLEX_UNIT_SP);
+                mTitlePanel.post(this);
             }
         }
         

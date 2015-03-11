@@ -12,6 +12,7 @@ import android.widget.Button;
 public class MainActivity extends Activity {
     
     private Button mLayoutScale;
+    private Button mListItemFlyInOut;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,16 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, LayoutScaleActivity.class);
+                startActivity(i);
+            }
+        });
+		
+		mListItemFlyInOut = (Button)findViewById(R.id.btn_list_item_fly_inout);
+		mListItemFlyInOut.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ListItemFlyInOutActivity.class);
                 startActivity(i);
             }
         });

@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="layout_scale">LayoutScale</string>
     <string name="scale_btn_text">Scale</string>
+    <string name="list_item_fly_inout">ListItemFlyInOut</string>
+    <string name="clear_list">ClearList</string>
 
 </resources>

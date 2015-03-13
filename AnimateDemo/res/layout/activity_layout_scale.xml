@@ -7,14 +7,14 @@
         android:id="@+id/layout_title_panel"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:background="#FAB6A0">
+        android:background="@color/MzBlue">
         
         <TextView
             android:id="@+id/hello_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="#B0D1CA"
+            android:background="@color/MzSoil"
             android:text="@string/hello_world"
             android:textSize="20sp" />
 
@@ -25,13 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_panel"
-        android:background="#76C2E9">
+        android:background="@color/MzSoil">
         
         <Button
             android:id="@+id/btn_scale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@color/MzBlue"
             android:text="@string/scale_btn_text" />
         
     </RelativeLayout>

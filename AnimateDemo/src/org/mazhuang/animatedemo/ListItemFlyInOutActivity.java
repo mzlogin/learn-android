@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -254,9 +253,9 @@ public class ListItemFlyInOutActivity extends Activity {
             myText.setPadding(80, 0, 0, 0);      
             myText.setText(text);    
             if (isGroup) {
-                myText.setBackgroundColor(Color.parseColor("#B0D1CA"));
+                myText.setBackgroundColor(getResources().getColor(R.color.MzYoung));
             } else {
-                myText.setBackgroundColor(Color.parseColor("#76C2E9"));
+                myText.setBackgroundColor(getResources().getColor(R.color.MzSoil));
             }
             return myText;    
         }

@@ -2,8 +2,6 @@ package org.mazhuang.animatedemo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -19,7 +17,6 @@ import android.widget.FrameLayout;
  * 可以把ExpandList包裹进来，头上会有当前显示的组的View，同时有被下个group推上去的赶脚
  */
 public class StickExpandListHead extends FrameLayout {
-
 	public StickExpandListHead(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
@@ -81,21 +78,22 @@ public class StickExpandListHead extends FrameLayout {
 					}
 					return;
 				}else if(groupHead != null) {
-				    if (firstVisibleItem != 0 ) {
-				        groupHead.setVisibility(View.VISIBLE);
+				    // 判断是否当前group是否被展开
+				    if (listView.isGroupExpanded(groupPosition)) {
+				    	if (firstVisibleItem != 0) {
+				    		groupHead.setVisibility(View.VISIBLE);
+				    	} else {
+					        View child = listView.getChildAt(0);
+					        int top = child.getTop();
+					        if (top < 0) {
+					        	groupHead.setVisibility(View.VISIBLE);
+					        } else {
+					        	groupHead.setVisibility(View.INVISIBLE);
+					        }
+				    	}
 				    } else {
 				        groupHead.setVisibility(View.INVISIBLE);
 				    }
-				    // 判断是否当前group是否被展开
-//				    if (listView.isGroupExpanded(groupPosition)) {
-//				        View child = listView.getChildAt(0);
-//				        Rect rect = new Rect();
-//				        Point pt = new Point();
-//				        if (listView.getChildVisibleRect(child, rect, pt)) {
-//				        }
-//				    } else {
-//				        groupHead.setVisibility(View.INVISIBLE);
-//				    }
 				}
 				
 				//改变groupHead位置。思路：遍历所有显示的Item，判断是否是group然后得到Top移动groupHead

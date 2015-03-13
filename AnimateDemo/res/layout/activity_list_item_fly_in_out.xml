@@ -11,11 +11,15 @@
         android:layout_height="wrap_content"
         android:text="@string/clear_list" />
     
-    <ExpandableListView 
-        android:id="@+id/expandable_list"
+    <org.mazhuang.animatedemo.StickExpandListHead 
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ExpandableListView 
+            android:id="@+id/expandable_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         
-    </ExpandableListView>
+    </ExpandableListView>        
+    </org.mazhuang.animatedemo.StickExpandListHead>
 
 </LinearLayout>

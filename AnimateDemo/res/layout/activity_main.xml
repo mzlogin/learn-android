@@ -18,5 +18,12 @@
         android:layout_height="wrap_content"
         android:text="@string/list_item_fly_inout"
         />
+    
+    <Button
+        android:id="@+id/btn_show_histogram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_histogram"
+        />
 
 </LinearLayout>

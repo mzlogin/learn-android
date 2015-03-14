@@ -13,6 +13,7 @@ public class MainActivity extends Activity {
     
     private Button mLayoutScale;
     private Button mListItemFlyInOut;
+    private Button mShowHistogram;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,16 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ListItemFlyInOutActivity.class);
+                startActivity(i);
+            }
+        });
+		
+		mShowHistogram = (Button)findViewById(R.id.btn_show_histogram);
+		mShowHistogram.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, HistogramActivity.class);
                 startActivity(i);
             }
         });

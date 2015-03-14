@@ -8,5 +8,6 @@
     <string name="scale_btn_text">Scale</string>
     <string name="list_item_fly_inout">ListItemFlyInOut</string>
     <string name="clear_list">ClearList</string>
+    <string name="show_histogram">ShowHistogram</string>
 
 </resources>

@@ -169,11 +169,12 @@ public class StickExpandListHead extends FrameLayout {
 			groupHead = listView.getExpandableListAdapter().getGroupView(showingGroupPosition,
 					listView.isGroupExpanded(showingGroupPosition), null, listView);
 			if(groupHead != null && indexOfChild(groupHead) == -1) {
-			    ViewGroup.LayoutParams lp = groupHead.getLayoutParams();
-			    params.height = lp.height;
-			    params.width = lp.width;
+			    ViewGroup.LayoutParams layoutParams = groupHead.getLayoutParams();
+			    if (layoutParams != null) {
+			        params.height = layoutParams.height;
+			        params.width = layoutParams.width;
+			    }
 				addView(groupHead, params);
-				//groupHead.setVisibility(View.INVISIBLE);
 			}
 		}
 	}

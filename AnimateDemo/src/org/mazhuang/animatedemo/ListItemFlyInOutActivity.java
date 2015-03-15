@@ -123,27 +123,58 @@ public class ListItemFlyInOutActivity extends Activity {
             
             mChildrenData = new ArrayList<List<String>>();
             List<String> childrenPlatform = new ArrayList<String>();
-            childrenPlatform.add("Linux");
-            childrenPlatform.add("Windows");
             childrenPlatform.add("Android");
             childrenPlatform.add("iOS");
+            childrenPlatform.add("Linux");
+            childrenPlatform.add("Windows");
+            childrenPlatform.add("Windows Phone");
+            childrenPlatform.add("Unix");
             mChildrenData.add(childrenPlatform);
             
             List<String> childrenLanguage = new ArrayList<String>();
+            childrenLanguage.add("ActionScript");
+            childrenLanguage.add("C");
             childrenLanguage.add("C++");
             childrenLanguage.add("Java");
-            childrenLanguage.add("Python");
+            childrenLanguage.add("JavaScript");
             childrenLanguage.add("Lisp");
+            childrenLanguage.add("Schema");
+            childrenLanguage.add("SmallTalk");
+            childrenLanguage.add("Python");
             childrenLanguage.add("Ruby");
+            childrenLanguage.add("Scala");
             mChildrenData.add(childrenLanguage);
             
             List<String> childrenDesignPattern = new ArrayList<String>();
+            childrenDesignPattern.add("AbstractFactory");
+            childrenDesignPattern.add("Builder");
+            childrenDesignPattern.add("FactoryMethod");
+            childrenDesignPattern.add("Prototype");
             childrenDesignPattern.add("Singleton");
-            childrenDesignPattern.add("Strategy");
-            childrenDesignPattern.add("Bridge");
-            childrenDesignPattern.add("Command");
-            childrenDesignPattern.add("Factory");
+            childrenDesignPattern.add("LazyInstantiation");
+            childrenDesignPattern.add("Utility");
             childrenDesignPattern.add("Adapter");
+            childrenDesignPattern.add("Bridge");
+            childrenDesignPattern.add("Composite");
+            childrenDesignPattern.add("DataBus");
+            childrenDesignPattern.add("Decorator");
+            childrenDesignPattern.add("Facade");
+            childrenDesignPattern.add("Flyweight");
+            childrenDesignPattern.add("Proxy");
+            childrenDesignPattern.add("RoleObject");
+            childrenDesignPattern.add("AnnotatedCallback");
+            childrenDesignPattern.add("ChainOfResponsibility");
+            childrenDesignPattern.add("Command");
+            childrenDesignPattern.add("Interpreter");
+            childrenDesignPattern.add("Iterator");
+            childrenDesignPattern.add("Mediator");
+            childrenDesignPattern.add("Momento");
+            childrenDesignPattern.add("Observer");
+            childrenDesignPattern.add("State");
+            childrenDesignPattern.add("Strategy");
+            childrenDesignPattern.add("TemplateMethod");
+            childrenDesignPattern.add("Visitor");
+            childrenDesignPattern.add("HierarchicalVisitor");
             mChildrenData.add(childrenDesignPattern);
         }
         

@@ -3,115 +3,116 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
-    android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" 
-        android:orientation="horizontal">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="50dp"
-            android:background="@color/MzBlue" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="80dp"
-            android:background="@color/MzBlue" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:background="@color/MzBlue" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="120dp"
-            android:background="@color/MzBlue" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </LinearLayout>
+    android:orientation="horizontal" >
     
-    <View 
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/MzBlue" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" 
-        android:orientation="horizontal">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6" />
-        <TextView 
-            android:layout_width="0dp"
+    <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">
+        <TextView
+            android:id="@+id/text_item1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:gravity="center_horizontal"
-            android:text="内存" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2" />
-        <TextView 
-            android:layout_width="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="一"/>
+        <ImageView 
+            android:id="@+id/histogram1"
+            android:layout_width="40dp"
+            android:layout_height="100dp"
+            android:background="@color/MzBlue"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/text_item1"/>
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:gravity="center_horizontal"
-            android:text="系统缓存" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2" />
-        <TextView 
-            android:layout_width="0dp"
+            android:layout_above="@id/histogram1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom|center"
+            android:text="120MB"/>
+    </RelativeLayout>
+    <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">
+        <TextView
+            android:id="@+id/text_item2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:gravity="center_horizontal"
-            android:text="应用垃圾" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2" />
-        <TextView 
-            android:layout_width="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="第二"/>
+        <ImageView 
+            android:id="@+id/histogram2"
+            android:layout_width="40dp"
+            android:layout_height="180dp"
+            android:background="@color/MzBlue"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/text_item2"/>
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:gravity="center_horizontal"
-            android:text="安装包" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6" />
-    </LinearLayout>
+            android:layout_above="@id/histogram2"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom|center"
+            android:text="180MB"/>
+    </RelativeLayout>
+    <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">
+        <TextView
+            android:id="@+id/text_item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="第三个"/>
+        <ImageView 
+            android:id="@+id/histogram3"
+            android:layout_width="40dp"
+            android:layout_height="220dp"
+            android:background="@color/MzBlue"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/text_item3"
+            android:src="@drawable/blue"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/histogram3"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom|center"
+            android:text="220MB"/>
+    </RelativeLayout>
+    <RelativeLayout 
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0">
+        <TextView
+            android:id="@+id/text_item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="这是第四"/>
+        <ImageView 
+            android:id="@+id/histogram4"
+            android:layout_width="40dp"
+            android:layout_height="130dp"
+            android:background="@color/MzBlue"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/text_item4"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/histogram4"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="bottom|center"
+            android:text="150MB"/>
+    </RelativeLayout>
 
 </LinearLayout>

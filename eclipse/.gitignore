@@ -33,7 +33,4 @@ proguard/
 
 # jars imported automation
 # *.jar
-
-.DS_Store
-.classpath
-project.properties
+.settings/

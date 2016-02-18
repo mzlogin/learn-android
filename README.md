@@ -3,6 +3,12 @@ AndroidPractices
 
 Some practices when I'm learning Android Programming.
 
-The Source of demos:
+Projects list:
 
-1. Android programming: the big nerd ranch guide
+* [AuthorityDemo](./android-studio/AuthorityDemo)
+
+    A tool to show effects start activity by `am start` with or without `--user` parameter.
+
+* [BootTimeMeasure](./android-studio/BootTimeMeasure)
+
+    A tool to measure android boot time.

@@ -14,5 +14,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Nothing to show because I'm started manually." />
+        android:textSize="24sp"
+        android:text="@null" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/show_on_boot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:checked="true"
+        android:textSize="18sp"
+        android:text="show on boot " />
 </RelativeLayout>

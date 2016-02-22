@@ -10,10 +10,13 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent();
-        i.setClassName("org.mazhuang.boottimemeasure", "org.mazhuang.boottimemeasure.MainActivity");
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra(MainActivity.EXTRA_FROM, true);
-        context.startActivity(i);
+        PrefsManager.setBootTime(context);
+
+        if (PrefsManager.getShowOnBoot(context, true)) {
+            Intent i = new Intent();
+            i.setClassName("org.mazhuang.boottimemeasure", "org.mazhuang.boottimemeasure.MainActivity");
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        }
     }
 }

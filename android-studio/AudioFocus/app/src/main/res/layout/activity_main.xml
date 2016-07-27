@@ -9,8 +9,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.mazhuang.audiofocus.MainActivity">
 
-    <TextView
+    <Spinner
+        android:id="@+id/kind_of_focus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/require_focus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_below="@id/kind_of_focus"
+        android:text="@string/require_focus"/>
+
+    <Button
+        android:id="@+id/abandon_focus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/require_focus"
+        android:text="@string/abandon_focus"
+        android:enabled="false"/>
+
+    <Button
+        android:id="@+id/play_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/abandon_focus"
+        android:text="@string/play_music"/>
+
+    <Button
+        android:id="@+id/play_short"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/play_music"
+        android:text="@string/play_short"/>
 </RelativeLayout>

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">AudioFocus</string>
+    <string name="require_focus">Require focus</string>
+    <string name="abandon_focus">Abandon focus</string>
+    <string name="play_music">Play music</string>
+    <string name="play_short">Play short</string>
+    <string name="require_focus_failed">Require focus failed!</string>
+
+    <string-array name="kind_of_focus">
+        <item>AUDIOFOCUS_GAIN</item>
+        <item>AUDIOFOCUS_GAIN_TRANSIENT</item>
+        <item>AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK</item>
+        <item>AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE</item>
+    </string-array>
 </resources>

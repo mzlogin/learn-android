@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NotificationListenerServiceDemo</string>
+    <string name="notification_settings">去设置通知权限</string>
+    <string name="notification_status_well">通知权限已打开，监听就绪</string>
+    <string name="notification_permission_granted">通知权限已经打开，监听未就绪</string>
+    <string name="notification_permission_denied">通知权限未打开</string>
 </resources>

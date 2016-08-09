@@ -1,5 +1,4 @@
-AndroidPractices
-================
+# AndroidPractices
 
 Some practices when I'm learning Android Programming.
 
@@ -20,3 +19,7 @@ Projects list:
 * [SignatureVerify](./android-studio/SignatureVerify/)
 
     Get and verify a packages's signature.
+
+* [NotificationListenerServiceDemo](./android-studio/NotificationListenerServiceDemo/)
+
+    Read wechat notification content via NotificationListenerService.

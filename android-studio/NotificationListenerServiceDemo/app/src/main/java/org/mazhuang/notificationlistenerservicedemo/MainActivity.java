@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(NotificationService.MSG_RECEIVER);
         filter.addAction(NotificationService.STATUS_RECEIVER);
         registerReceiver(mReceiver, filter);
+
+        Log.d("mzzz", "activity onCreate");
     }
 
     @Override
@@ -50,6 +53,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkNotificationSettings();
+
+        Log.d("mzzz", "activity onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.d("mzzz", "activity onPause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.d("mzzz", "activity onRestart");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Log.d("mzzz", "activity onNewIntent");
     }
 
     private void restartNotificationService() {
@@ -64,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mReceiver);
+
+        Log.d("mzzz", "activity onDestroy");
     }
 
     private void initViews() {

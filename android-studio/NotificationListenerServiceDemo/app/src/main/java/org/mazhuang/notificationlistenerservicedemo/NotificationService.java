@@ -3,9 +3,11 @@ package org.mazhuang.notificationlistenerservicedemo;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Created by mazhuang on 2016/8/9.
@@ -70,9 +72,40 @@ public class NotificationService extends NotificationListenerService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d("mzzz", "onCreate");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("mzzz", "onDestroy");
+    }
+
+    @Override
     public void onListenerConnected() {
+        Log.d("mzzz", "onListenerConnected");
         Intent intent = new Intent(STATUS_RECEIVER);
         intent.putExtra(STATUS_KEY, true);
         sendBroadcast(intent);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d("mzzz", "onBind");
+        return super.onBind(intent);
+    }
+
+    @Override
+    public void onRebind(Intent intent) {
+        Log.d("mzzz", "onRebind");
+        super.onRebind(intent);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d("mzzz", "onUnbind");
+        return super.onUnbind(intent);
     }
 }

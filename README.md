@@ -23,3 +23,7 @@ Projects list:
 * [NotificationListenerServiceDemo](./android-studio/NotificationListenerServiceDemo/)
 
     Read wechat notification content via NotificationListenerService.
+
+* [HelloAndroidJni](./android-studio/HelloAndroidJni/)
+
+    Sample hello-jni project follow steps in [Create Hello-JNI with Android Studio - Google Codelabs](https://codelabs.developers.google.com/codelabs/android-studio-jni/index.html?index=..%2F..%2Findex)

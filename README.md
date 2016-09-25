@@ -27,3 +27,9 @@ Projects list:
 * [HelloAndroidJni](./android-studio/HelloAndroidJni/)
 
     Sample hello-jni project follow steps in [Create Hello-JNI with Android Studio - Google Codelabs](https://codelabs.developers.google.com/codelabs/android-studio-jni/index.html?index=..%2F..%2Findex)
+
+* [MiBuspass](./android-studio/MiBuspass/)
+
+    Call Xiaomi buscard ui and click the default card.
+
+    <img src="https://raw.githubusercontent.com/mzlogin/AndroidPractices/master/assets/mibuspass.png" width="300" alt="xiaomi buspass">

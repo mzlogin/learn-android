@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BroadcastTest</string>
+    <string name="item_format">%1$s\t%2$s</string>
 </resources>

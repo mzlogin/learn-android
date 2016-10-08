@@ -33,3 +33,7 @@ Projects list:
     Call Xiaomi buscard ui and click the default card.
 
     <img src="https://raw.githubusercontent.com/mzlogin/AndroidPractices/master/assets/mibuspass.png" width="300" alt="xiaomi buspass">
+
+* [BroadcastTest](./android-studio/BroadcastTest/)
+
+    Broadcast send and receive test.

@@ -37,3 +37,7 @@ Projects list:
 * [BroadcastTest](./android-studio/BroadcastTest/)
 
     Broadcast send and receive test.
+
+* [WebviewTest](./android-studio/WebviewTest/)
+
+    Webview Test.

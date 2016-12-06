@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import static android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
 import static org.mazhuang.webviewtest.R.id.webview;
@@ -23,8 +24,15 @@ public class MainActivity extends AppCompatActivity {
         webView = (WebView) findViewById(webview);
         WebSettings settings = webView.getSettings();
 
-        // 启动 Javascript
+        // 启用 Javascript
         settings.setJavaScriptEnabled(true);
+
+        // 启用 localStorage 和数据库
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setDatabaseEnabled(true);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            webView.getSettings().setDatabasePath("/data/data/" + webView.getContext().getPackageName() + "/databases/");
+        }
 
         // 允许 https 与 http 的 mixed content，
         // 详见 https://developer.android.com/about/versions/android-5.0-changes.html#BehaviorWebView
@@ -43,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
+
+        // 让当前 webView 处理页面跳转
+        // https://developer.android.com/guide/webapps/webview.html#HandlingNavigation
+        // https://developer.android.com/reference/android/webkit/WebViewClient.html#shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
+        webView.setWebViewClient(new WebViewClient());
 
         webView.loadUrl("http://mazhuang.org");
     }

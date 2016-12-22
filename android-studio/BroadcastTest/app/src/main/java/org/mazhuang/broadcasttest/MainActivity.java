@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             filter.addAction("android.intent.action.BOOT_COMPLETED");
             filter.addAction("android.intent.action.DEVICE_STORAGE_LOW");
             filter.addAction("android.intent.action.DEVICE_STORAGE_OK");
-            filter.addAction("android.intent.action.PACKAGE_ADDED");
             filter.addAction("android.net.wifi.STATE_CHANGE");
             filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
             filter.addAction("android.intent.action.BATTERY_CHANGED");
@@ -79,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
             filter.addAction("android.intent.action.MEDIA_UNMOUNTED");
             filter.addAction("android.intent.action.MEDIA_MOUNTED");
             filter.addAction("android.intent.action.POWER_SAVE_MODE_CHANGED");
+            registerReceiver(mBroadcastReceiver, filter);
+
+            filter = new IntentFilter();
+            filter.addAction("android.intent.action.PACKAGE_ADDED");
+            filter.addAction("android.intent.action.PACKAGE_CHANGED");
+            filter.addAction("android.intent.action.PACKAGE_REMOVED");
+            filter.addDataScheme("package");
             registerReceiver(mBroadcastReceiver, filter);
         }
     }

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BluetoothDemo</string>
+    <string name="send">发送</string>
+    <string name="no_valid_file">未选择有效文件</string>
+    <string name="send_file_by_intent">系统 Intent 发送文件</string>
+    <string name="run_as_server">作为服务端运行</string>
+    <string name="run_as_client">作为客户端运行</string>
+</resources>

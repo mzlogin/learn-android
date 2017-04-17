@@ -4,25 +4,25 @@ Some practices when I'm learning Android Programming.
 
 Projects list:
 
+* [AudioFocus](./android-studio/AudioFocus/)
+
+    A tool to test granted/loss audio focus.
+
 * [AuthorityDemo](./android-studio/AuthorityDemo)
 
     A tool to show effects start activity by `am start` with or without `--user` parameter.
+
+* [BluetoothDemo](./android-studio/BluetoothDemo/)
+
+    Bluetooth send file and other features.
 
 * [BootTimeMeasure](./android-studio/BootTimeMeasure)
 
     A tool to measure android boot time.
 
-* [AudioFocus](./android-studio/AudioFocus/)
+* [BroadcastTest](./android-studio/BroadcastTest/)
 
-    A tool to test granted/loss audio focus.
-
-* [SignatureVerify](./android-studio/SignatureVerify/)
-
-    Get and verify a packages's signature.
-
-* [NotificationListenerServiceDemo](./android-studio/NotificationListenerServiceDemo/)
-
-    Read wechat notification content via NotificationListenerService.
+    Broadcast send and receive test.
 
 * [HelloAndroidJni](./android-studio/HelloAndroidJni/)
 
@@ -34,9 +34,13 @@ Projects list:
 
     <img src="https://raw.githubusercontent.com/mzlogin/AndroidPractices/master/assets/mibuspass.png" width="300" alt="xiaomi buspass">
 
-* [BroadcastTest](./android-studio/BroadcastTest/)
+* [NotificationListenerServiceDemo](./android-studio/NotificationListenerServiceDemo/)
 
-    Broadcast send and receive test.
+    Read wechat notification content via NotificationListenerService.
+
+* [SignatureVerify](./android-studio/SignatureVerify/)
+
+    Get and verify a packages's signature.
 
 * [WebviewTest](./android-studio/WebviewTest/)
 

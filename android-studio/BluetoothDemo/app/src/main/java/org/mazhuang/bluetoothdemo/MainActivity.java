@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public DemoItem[] items;
+    public DemoItem[] mItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        items = new DemoItem[]{
+        mItems = new DemoItem[]{
                 new DemoItem(getString(R.string.send_file_by_intent), SendFileByIntentActivity.class),
                 new DemoItem(getString(R.string.run_as_server), RunAsServerActivity.class),
                 new DemoItem(getString(R.string.run_as_client), RunAsClientActivity.class)
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, items[position].activityClass);
+                Intent intent = new Intent(MainActivity.this, mItems[position].activityClass);
                 startActivity(intent);
             }
         });
@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private class MyBaseAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return items.length;
+            return mItems.length;
         }
 
         @Override
         public Object getItem(int position) {
-            return items[position];
+            return mItems[position];
         }
 
         @Override
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 convertView.setTag(holder);
             }
 
-            holder.nameTextView.setText(items[position].name);
+            holder.nameTextView.setText(mItems[position].name);
 
             return convertView;
         }

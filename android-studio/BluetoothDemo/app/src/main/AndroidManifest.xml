@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_BLUETOOTH_SHARE" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +21,7 @@
         </activity>
         <activity android:name=".SendFileByIntentActivity" />
         <activity android:name=".RunAsServerActivity" />
-        <activity android:name=".RunAsClientActivity"></activity>
+        <activity android:name=".RunAsClientActivity" />
     </application>
 
 </manifest>

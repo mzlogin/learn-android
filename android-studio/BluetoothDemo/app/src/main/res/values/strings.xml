@@ -5,4 +5,12 @@
     <string name="send_file_by_intent">系统 Intent 发送文件</string>
     <string name="run_as_server">作为服务端运行</string>
     <string name="run_as_client">作为客户端运行</string>
+    <string name="device_unsupport">设备不支持蓝牙</string>
+    <string name="cannot_work_without_bluetooth">不开启蓝牙无法使用</string>
+    <string name="link_failed">连接失败</string>
+    <string name="run">运行</string>
+    <string name="connect">连接</string>
+    <string name="refresh_devices">刷新设备</string>
+    <string name="create_socket_failed">创建 Socket 失败</string>
+    <string name="connect_failed">连接失败</string>
 </resources>

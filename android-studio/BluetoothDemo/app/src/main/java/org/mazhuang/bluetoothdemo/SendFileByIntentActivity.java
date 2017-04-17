@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class SendFileByIntentActivity extends AppCompatActivity {
 
-    private static final int FILE_SELECT_REQUEST = 1;
+    private static final int REQUEST_SELECT_FILE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class SendFileByIntentActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case FILE_SELECT_REQUEST:
+            case REQUEST_SELECT_FILE:
                 if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     sendFile(uri);
@@ -55,7 +55,7 @@ public class SendFileByIntentActivity extends AppCompatActivity {
 
         startActivityForResult(
                 Intent.createChooser(intent, "选择文件"),
-                FILE_SELECT_REQUEST
+                REQUEST_SELECT_FILE
         );
     }
 

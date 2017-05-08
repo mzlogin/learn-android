@@ -60,6 +60,7 @@ public class RunAsClientActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
         // If there are paired devices
         if (pairedDevices.size() > 0) {

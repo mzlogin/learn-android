@@ -34,6 +34,10 @@ Projects list:
 
     <img src="https://raw.githubusercontent.com/mzlogin/AndroidPractices/master/assets/mibuspass.png" width="300" alt="xiaomi buspass">
 
+* [MulticastDemo](./android-studio/MulticastDemo/)
+
+    Multicast test in LAN.
+
 * [NotificationListenerServiceDemo](./android-studio/NotificationListenerServiceDemo/)
 
     Read wechat notification content via NotificationListenerService.

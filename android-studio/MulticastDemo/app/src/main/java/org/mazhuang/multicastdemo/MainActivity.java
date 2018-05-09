@@ -101,14 +101,16 @@ public class MainActivity extends AppCompatActivity {
                     multicastSocket = new MulticastSocket();
                     multicastSocket.setTimeToLive(TTL_TIME);
                     multicastSocket.setReuseAddress(true);
+                    multicastSocket.setLoopbackMode(true);
                     // multicastSocket.joinGroup(destAddress);
 
                     while (true) {
                         Thread.sleep(1000);
-                        byte[] sendMsg = sContent.getBytes();
+                        String content = DateUtils.getFormattedDatetime() + " " + sContent;
+                        byte[] sendMsg = content.getBytes();
                         DatagramPacket packet = new DatagramPacket(sendMsg, sendMsg.length, destAddress, MULTICAST_PORT);
                         multicastSocket.send(packet);
-                        Log.v(TAG, "multicast " + sContent);
+                        Log.v(TAG, "multicast " + content);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -155,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (packet.getData() != null) {
                             Log.v(TAG, "receive " + new String(packet.getData()).trim());
-                            Map<String, String> data = new HashMap<>();
+                            final Map<String, String> data = new HashMap<>();
                             data.put(KEY_STR, DateUtils.getFormattedDatetime() + " 收到数据：" + new String(packet.getData()).trim());
-                            mData.add(data);
                             MainActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    mData.add(data);
                                     mAdapter.notifyDataSetChanged();
                                 }
                             });
@@ -242,12 +244,12 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if (packet.getData() != null) {
                             Log.v(TAG, "receive " + new String(packet.getData()).trim());
-                            Map<String, String> data = new HashMap<>();
+                            final Map<String, String> data = new HashMap<>();
                             data.put(KEY_STR, DateUtils.getFormattedDatetime() + " 收到数据：" + new String(packet.getData()).trim());
-                            mData.add(data);
                             MainActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    mData.add(data);
                                     mAdapter.notifyDataSetChanged();
                                 }
                             });
@@ -315,9 +317,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static InetAddress getBroadcastAddress(Context context) throws UnknownHostException {
-        WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         DhcpInfo dhcp = wifi.getDhcpInfo();
-        if(dhcp==null) {
+        if (dhcp == null) {
             return InetAddress.getByName("255.255.255.255");
         }
         int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;

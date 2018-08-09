@@ -5,22 +5,15 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/send1111"
+        android:id="@+id/broadcast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send1111"/>
-
+        android:text="@string/broadcast"/>
     <Button
-        android:id="@+id/send2222"
+        android:id="@+id/clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/send2222"/>
-
-    <Button
-        android:id="@+id/send3333"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/send3333"/>
+        android:text="@string/clear"/>
 
     <ListView
         android:id="@+id/receive_list"

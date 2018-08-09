@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MulticastDemo</string>
-    <string name="send1111">广播 1111</string>
-    <string name="send2222">广播 2222</string>
-    <string name="send3333">广播 3333</string>
+    <string name="broadcast">广播</string>
+    <string name="clear">清空</string>
 </resources>

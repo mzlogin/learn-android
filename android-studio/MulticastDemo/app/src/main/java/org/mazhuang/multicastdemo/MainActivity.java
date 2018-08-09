@@ -1,25 +1,27 @@
 package org.mazhuang.multicastdemo;
 
 import android.content.Context;
-import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,21 +42,19 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_STR = "str";
 
-    private static String sContent1111 = "1111";
-    private static String sContent2222 = "2222";
-    private static String sContent3333 = "3333";
-
-    private static String sContent = sContent1111;
+    private static int sBroadcastValue = 0;
 
     private static final String MULTICAST_IP = "224.0.0.251";
     private static final int MULTICAST_PORT = 12345;
     private static final int TTL_TIME = 5;
     private static final int RECEIVE_LENGTH = 1024;
 
-    private static String sBroadcastIp = null;
-    private static final int BROADCAST_PORT = 12345;
-
     private WifiManager.MulticastLock mMulticastLock = null;
+    private PowerManager.WakeLock mWakeLock = null;
+
+    private Handler mHandler;
+    private static final int MSG_SEND = 100;
+    private CountDownLatch mHandlerLatch = new CountDownLatch(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,37 +63,39 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        try {
-            sBroadcastIp = getBroadcastAddress(this).getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        initLocks();
 
         initViews();
 
         startMulticastThread();
 
         startReceiveThread();
+    }
 
-//        startBroadcastThread();
-//        startBroadcastReceiveThread();
+    private void initLocks() {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        mMulticastLock = wifiManager.createMulticastLock("multicast.test");
+
+        PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+        mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakeLock");
     }
 
     private void startMulticastThread() {
         new Thread() {
+            private MulticastSocket multicastSocket;
+
             @Override
             public void run() {
 
-                MulticastSocket multicastSocket = null;
+                Looper.prepare();
 
                 try {
-
                     while (mMulticastLock == null || !mMulticastLock.isHeld()) {
                         Thread.sleep(1000);
                         continue;
                     }
 
-                    InetAddress destAddress = InetAddress.getByName(MULTICAST_IP);
+                    final InetAddress destAddress = InetAddress.getByName(MULTICAST_IP);
                     if (!destAddress.isMulticastAddress()) {
                         throw new Exception("不是多播地址！");
                     }
@@ -104,14 +106,32 @@ public class MainActivity extends AppCompatActivity {
                     multicastSocket.setLoopbackMode(true);
                     // multicastSocket.joinGroup(destAddress);
 
-                    while (true) {
-                        Thread.sleep(1000);
-                        String content = DateUtils.getFormattedDatetime() + " " + sContent;
-                        byte[] sendMsg = content.getBytes();
-                        DatagramPacket packet = new DatagramPacket(sendMsg, sendMsg.length, destAddress, MULTICAST_PORT);
-                        multicastSocket.send(packet);
-                        Log.v(TAG, "multicast " + content);
-                    }
+                    mHandler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            switch (msg.what) {
+                                case MSG_SEND: {
+                                    String content = DateUtils.getFormattedDatetime() + " " + sBroadcastValue;
+                                    byte[] sendMsg = content.getBytes();
+                                    DatagramPacket packet = new DatagramPacket(sendMsg, sendMsg.length, destAddress, MULTICAST_PORT);
+                                    Log.v(TAG, "multicast " + content);
+                                    try {
+                                        multicastSocket.send(packet);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                    break;
+
+                                default:
+                                    super.handleMessage(msg);
+                            }
+                        }
+                    };
+
+                    mHandlerLatch.countDown();
+
+                    Looper.loop();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -150,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
                     String selfIp = NetworkUtils.getIpAddress();
                     while (true) {
+//                        if (!mMulticastLock.isHeld()) {
+//                            mMulticastLock.acquire();
+//                        }
+
                         receiveMulticast.receive(packet);
                         if (packet.getAddress().getHostAddress().equals(selfIp)) {
                             Log.v(TAG, "packet from self, ignore");
@@ -158,6 +182,14 @@ public class MainActivity extends AppCompatActivity {
                         if (packet.getData() != null) {
                             Log.v(TAG, "receive " + new String(packet.getData()).trim());
                             final Map<String, String> data = new HashMap<>();
+                            String content = new String(packet.getData()).trim();
+                            String[] splits = content.split(" ");
+                            sBroadcastValue = Integer.valueOf(splits[splits.length - 1]) + 1;
+
+                            mHandlerLatch.await();
+
+                            mHandler.sendEmptyMessage(MSG_SEND);
+
                             data.put(KEY_STR, DateUtils.getFormattedDatetime() + " 收到数据：" + new String(packet.getData()).trim());
                             MainActivity.this.runOnUiThread(new Runnable() {
                                 @Override
@@ -179,93 +211,6 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void startBroadcastThread() {
-        new Thread() {
-            @Override
-            public void run() {
-
-                DatagramSocket datagramSocket = null;
-
-                try {
-
-                    while (mMulticastLock == null || !mMulticastLock.isHeld()) {
-                        Thread.sleep(1000);
-                        continue;
-                    }
-
-                    InetAddress destAddress = InetAddress.getByName(sBroadcastIp);
-
-                    datagramSocket = new DatagramSocket();
-                    datagramSocket.setBroadcast(true);
-
-                    while (true) {
-                        Thread.sleep(1000);
-                        byte[] sendMsg = sContent.getBytes();
-                        DatagramPacket packet = new DatagramPacket(sendMsg, sendMsg.length, destAddress, BROADCAST_PORT);
-                        datagramSocket.send(packet);
-                        Log.v(TAG, "broadcast " + sContent);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (datagramSocket != null) {
-                        datagramSocket.close();
-                    }
-                }
-            }
-        }.start();
-    }
-
-    private void startBroadcastReceiveThread() {
-        new Thread() {
-            @Override
-            public void run() {
-                DatagramSocket receiveSocket = null;
-
-                try {
-
-                    while (mMulticastLock == null || !mMulticastLock.isHeld()) {
-                        Thread.sleep(1000);
-                        continue;
-                    }
-
-                    receiveSocket = new DatagramSocket(null);
-                    receiveSocket.setReuseAddress(true);
-                    receiveSocket.bind(new InetSocketAddress(BROADCAST_PORT));
-
-                    DatagramPacket packet = new DatagramPacket(new byte[RECEIVE_LENGTH], RECEIVE_LENGTH);
-
-                    String selfIp = NetworkUtils.getIpAddress();
-                    while (true) {
-                        receiveSocket.receive(packet);
-                        if (packet.getAddress().getHostAddress().equals(selfIp)) {
-                            Log.v(TAG, "packet from self, ignore");
-                            continue;
-                        }
-                        if (packet.getData() != null) {
-                            Log.v(TAG, "receive " + new String(packet.getData()).trim());
-                            final Map<String, String> data = new HashMap<>();
-                            data.put(KEY_STR, DateUtils.getFormattedDatetime() + " 收到数据：" + new String(packet.getData()).trim());
-                            MainActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mData.add(data);
-                                    mAdapter.notifyDataSetChanged();
-                                }
-                            });
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (receiveSocket != null) {
-                        receiveSocket.close();
-                    }
-                }
-            }
-        }.start();
-    }
-
     private void initViews() {
         mAdapter = new SimpleAdapter(this,
                 mData,
@@ -275,19 +220,22 @@ public class MainActivity extends AppCompatActivity {
         mReceiveList.setAdapter(mAdapter);
     }
 
-    @OnClick({R.id.send1111, R.id.send2222, R.id.send3333})
+    @OnClick({R.id.broadcast, R.id.clear})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.send1111:
-                sContent = sContent1111;
+            case R.id.broadcast:
+                sBroadcastValue = 0;
+                try {
+                    mHandlerLatch.await();
+                    mHandler.sendEmptyMessage(MSG_SEND);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
 
-            case R.id.send2222:
-                sContent = sContent2222;
-                break;
-
-            case R.id.send3333:
-                sContent = sContent3333;
+            case R.id.clear:
+                mData.clear();
+                mAdapter.notifyDataSetChanged();
                 break;
 
             default:
@@ -298,35 +246,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-        mMulticastLock = wifiManager.createMulticastLock("multicast.test");
         mMulticastLock.acquire();
+        mWakeLock.acquire(1000000);
+
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    Log.v(TAG, "multicast lock is held: " + mMulticastLock.isHeld());
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mMulticastLock.release();
         System.exit(0);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mMulticastLock.release();
-    }
-
-    public static InetAddress getBroadcastAddress(Context context) throws UnknownHostException {
-        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        DhcpInfo dhcp = wifi.getDhcpInfo();
-        if (dhcp == null) {
-            return InetAddress.getByName("255.255.255.255");
-        }
-        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-        byte[] quads = new byte[4];
-        for (int k = 0; k < 4; k++) {
-            quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-        }
-        return InetAddress.getByAddress(quads);
+        mWakeLock.release();
     }
 }

@@ -1,39 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
-            name="user"
-            type="org.mazhuang.mvvmdemo.UserEntity" />
+            name="observablePojo"
+            type="org.mazhuang.mvvmdemo.ObservablePojo" />
+
+        <variable
+            name="pojo"
+            type="org.mazhuang.mvvmdemo.Pojo" />
+
+        <variable
+            name="pojo2"
+            type="org.mazhuang.mvvmdemo.Pojo" />
+
+        <variable
+            name="viewModelPojo"
+            type="org.mazhuang.mvvmdemo.ViewModelPojo" />
+
+        <variable
+            name="liveDataPojo"
+            type="org.mazhuang.mvvmdemo.LiveDataPojo" />
+
+        <variable
+            name="viewModelLiveData"
+            type="org.mazhuang.mvvmdemo.ViewModelLiveData" />
+
+        <variable
+            name="observableFieldPojo"
+            type="org.mazhuang.mvvmdemo.ObservableFieldPojo"/>
+
+        <variable
+            name="observableFieldPojo2"
+            type="org.mazhuang.mvvmdemo.ObservableFieldPojo"/>
     </data>
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/username"
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/please_input_user_name"
-            android:text="@={user.username}"/>
+            android:orientation="vertical"
+            tools:context=".MainActivity">
 
-        <EditText
-            android:id="@+id/age"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:hint="@string/please_input_age"
-            android:text="@={user.age}"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/observable_pojo" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{@string/welcome_format(user.username, user.age)}"/>
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={observablePojo.username}" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{observablePojo.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> observablePojo.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pojo" />
+
+            <EditText
+                android:id="@+id/pojo_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={pojo.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pojo.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> pojo.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pojo2" />
+
+            <EditText
+                android:id="@+id/pojo2_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@{pojo2.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pojo2.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> pojo2.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/view_model_pojo" />
+
+            <EditText
+                android:id="@+id/view_model_pojo_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={viewModelPojo.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModelPojo.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> viewModelPojo.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/live_data" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={liveDataPojo.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{liveDataPojo.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> liveDataPojo.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/view_model_live_data" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={viewModelLiveData.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModelLiveData.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> viewModelLiveData.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/observable_field_pojo1" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@={observableFieldPojo.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{observableFieldPojo.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> observableFieldPojo.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/observable_field_pojo2" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/please_input_user_name"
+                android:text="@{observableFieldPojo2.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{observableFieldPojo2.username}" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> observableFieldPojo2.setUsername(`abc`)}"
+                android:text="@string/change_username" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </layout>

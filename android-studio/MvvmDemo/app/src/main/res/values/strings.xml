@@ -3,4 +3,14 @@
     <string name="please_input_user_name">please input user name</string>
     <string name="please_input_age">please input age</string>
     <string name="welcome_format">welcome, %1$s, age %2$s</string>
+    <string name="change_username">change user name</string>
+    <string name="change_age">change age</string>
+    <string name="observable_pojo">Observable Pojo</string>
+    <string name="pojo">Pojo @{model}</string>
+    <string name="pojo2">Pojo2 @{model}</string>
+    <string name="view_model_pojo">ViewModel Pojo</string>
+    <string name="live_data">LiveData</string>
+    <string name="view_model_live_data">ViewModelLiveData</string>
+    <string name="observable_field_pojo1">ObservableField Pojo @={model}</string>
+    <string name="observable_field_pojo2">ObservableField Pojo @{model}</string>
 </resources>

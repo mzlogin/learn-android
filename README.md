@@ -49,3 +49,7 @@ Projects list:
 * [WebviewTest](./android-studio/WebviewTest/)
 
     Webview Test.
+
+* [LogbackDemo](./android-studio/LogbackDemo/)
+
+    Integrate with slf4j + logback. Need Lombok plugin installed.

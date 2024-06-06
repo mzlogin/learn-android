@@ -19,5 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
         log.info("hello world");
         log.info("number {}, boolean {}, string {}, object {}", 1, true, "string", new Object());
+        log.debug("debug log test");
     }
 }

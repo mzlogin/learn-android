@@ -26,11 +26,9 @@
         </rollingPolicy>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="logcat" />
-    </root>
-
     <root level="INFO">
+        <appender-ref ref="logcat" />
         <appender-ref ref="local_file" />
     </root>
+
 </configuration>

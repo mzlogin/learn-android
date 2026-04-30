@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -57,6 +58,48 @@ public class MainActivity extends AppCompatActivity {
         // https://developer.android.com/reference/android/webkit/WebViewClient.html#shouldOverrideUrlLoading(android.webkit.WebView, java.lang.String)
         webView.setWebViewClient(new WebViewClient());
 
-        webView.loadUrl("http://mazhuang.org");
+        // 注册 JSBridge
+        webView.addJavascriptInterface(new WkBridge(), "WkBridge");
+
+
+        webView.loadUrl("https://mazhuang.org/");
+    }
+
+    private class WkBridge {
+
+        @JavascriptInterface
+        public void enterFullscreen() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        getWindow().getDecorView().setSystemUiVisibility(
+                                View.SYSTEM_UI_FLAG_FULLSCREEN
+                                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                    } else {
+                        getWindow().getDecorView().setSystemUiVisibility(
+                                View.SYSTEM_UI_FLAG_FULLSCREEN
+                                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                    }
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().hide();
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void exitFullscreen() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                    if (getSupportActionBar() != null) {
+                        getSupportActionBar().show();
+                    }
+                }
+            });
+        }
     }
 }

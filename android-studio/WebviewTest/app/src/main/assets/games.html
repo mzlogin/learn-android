@@ -1,729 +1,828 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小学同步答题学习系统｜新增儿童卡通赛车游戏</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
-body{background:#f0f7ff;padding:16px;text-align:center;}
-.container{max-width:600px;margin:0 auto;background:#fff;border-radius:24px;padding:24px;box-shadow:0 6px 18px rgba(0,0,0,0.08);}
-h1{color:#2364cc;font-size:24px;margin-bottom:16px;}
-/* 顶部年级栏 */
-.top-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #e8f0ff;}
-.grade-wrap{display:flex;align-items:center;gap:8px;}
-.grade-wrap label{font-size:16px;color:#333;}
-#gradeSelect{padding:8px 12px;border:2px solid #b3d8ff;border-radius:10px;font-size:16px;outline:none;}
-.score-info{font-size:16px;color:#28a745;font-weight:bold;}
-.sound-switch{font-size:15px;cursor:pointer;color:#666;user-select:none;}
-.continue-count{color:#28a745;font-size:18px;margin:6px 0;}
-.timer-text{color:#e63946;font-size:20px;font-weight:bold;margin:10px 0;line-height:1.4;}
-/* 三大板块卡片 */
-.board-wrap{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:20px;}
-.card{border-radius:18px;padding:20px;color:#fff;text-align:left;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.card-chinese{background:linear-gradient(135deg,#4096ff,#73b8ff);}
-.card-math{background:linear-gradient(135deg,#36c38f,#56ddaa);}
-.card-game{background:linear-gradient(135deg,#9254de,#b88aff);}
-.card h2{font-size:20px;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.card-desc{font-size:14px;opacity:0.9;margin-bottom:14px;line-height:1.5;}
-.card-btn{display:inline-block;padding:10px 18px;background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.5);border-radius:12px;color:#fff;font-size:15px;cursor:pointer;transition:0.2s;user-select:none;}
-.card-btn:hover{background:rgba(255,255,255,0.4);}
-/* 子功能按钮组 */
-.btn-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
-.sub-btn{padding:10px;border:none;border-radius:10px;font-size:15px;cursor:pointer;background:#fff;color:#2266cc;font-weight:500;user-select:none;}
-/* 答题页面通用 */
-.box{margin-top:16px;padding:24px;border:3px solid #e6f4ff;border-radius:20px;min-height:220px;background:#fafdff;position:relative;overflow:hidden;display:none;}
-.box.active{display:block;}
-.question{font-size:26px;margin:25px 0;color:#222;font-weight:bold;letter-spacing:1px;line-height:1.5;}
-input{width:85%;padding:14px;font-size:22px;border:3px solid #b3d8ff;border-radius:12px;text-align:center;outline:none;transition:0.3s;}
-input:focus{border-color:#40a9ff;box-shadow:0 0 8px #cce8ff;}
-.answer-btn{padding:12px 30px;font-size:20px;margin-top:18px;border:none;border-radius:12px;background:linear-gradient(45deg,#36cfa9,#29d8b5);color:#fff;cursor:pointer;box-shadow:0 4px 8px rgba(0,0,0,0.1);transition:0.3s;user-select:none;}
-.answer-btn:active{transform:scale(0.95);}
-.tip{font-size:20px;margin:18px 0;font-weight:500;min-height:28px;}
-.pass{color:#00b42a;}
-.fail{color:#f53f3f;}
-.wrong-box{text-align:left;background:#fef2f2;padding:16px;border-radius:15px;margin-top:20px;white-space:pre-line;font-size:15px;max-height:200px;overflow-y:auto;}
-.back-main{margin-top:16px;padding:10px 20px;background:#666;color:#fff;border:none;border-radius:12px;font-size:16px;cursor:pointer;user-select:none;}
-.hide{display:none !important;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二年级学习乐园</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", sans-serif; background: #f0f8ff; padding: 20px; color: #333; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #ff6b6b; margin-bottom: 20px; font-size: 28px; text-shadow: 2px 2px 0px #fff; }
+        
+        /* 顶部导航 */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #fff; padding: 15px 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .score-display { font-size: 18px; font-weight: bold; color: #ffa502; display: flex; align-items: center; gap: 5px; }
+        .nav-btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; font-weight: bold; }
+        .btn-home { background: #7bed9f; color: #fff; }
+        .btn-wrong { background: #ff4757; color: #fff; position: relative; }
+        .nav-btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-/* 弹窗通用 */
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:999;}
-.modal-content{background:#fff;padding:30px;border-radius:20px;text-align:center;animation:pop 0.4s ease;max-width:92%;max-height:90vh;overflow-y:auto;}
-@keyframes pop{0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;}}
-.modal-text{font-size:24px;margin:15px 0;font-weight:bold;}
-.modal-btn{margin:12px auto;padding:10px 24px;border:none;border-radius:10px;background:#40a9ff;color:#fff;font-size:18px;cursor:pointer;width:80%;user-select:none;}
-.game-list-btn{background:#722ed1;margin:8px 0;}
-.award-box{border:4px solid #ffd700;background:#fffbeb;padding:30px;border-radius:20px;animation:pop 0.5s ease;}
-.correct-ans{font-size:20px;color:#e63946;font-weight:bold;margin:8px 0;}
-.result-info{font-size:18px;margin:6px 0;}
+        /* 页面容器 */
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* 锤子动画 */
-.hammer-wrap{position:absolute;top:10px;right:20px;width:120px;height:120px;pointer-events:none;z-index:10;}
-.hammer{font-size:70px;transform-origin:80% 80%;animation:hammerHit 0.5s ease;}
-@keyframes hammerHit{
-0%{transform:rotate(-30deg) translateY(0);}
-30%{transform:rotate(20deg) translateY(-10px);}
-60%{transform:rotate(-15deg) translateY(5px);}
-80%{transform:rotate(8deg) translateY(0);}
-100%{transform:rotate(0deg) translateY(0);}
-}
-.shake-target{animation:shakeTarget 0.5s ease;}
-@keyframes shakeTarget{
-0%,100%{transform:translateX(0);}
-20%{transform:translateX(-8px);}
-40%{transform:translateX(8px);}
-60%{transform:translateX(-6px);}
-80%{transform:translateX(6px);}
-}
-.game-container{width:100%;min-height:320px;margin:15px 0;border:2px solid #ddd;border-radius:12px;padding:10px;position:relative;}
-.game-countdown{color:red;font-size:22px;font-weight:bold;margin:8px 0;}
-</style>
+        /* 菜单网格 */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .menu-card { background: #fff; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; border: 2px solid transparent; }
+        .menu-card:hover { transform: translateY(-5px); border-color: #7bed9f; box-shadow: 0 8px 25px rgba(123, 237, 159, 0.2); }
+        .menu-card h2 { color: #2ed573; margin-bottom: 10px; font-size: 22px; }
+        .menu-card p { color: #888; font-size: 14px; }
+
+        /* 测试区域 - 填空题 */
+        .game-area { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .question-box { font-size: 24px; margin-bottom: 30px; text-align: center; padding: 30px; background: #f8f9fa; border-radius: 15px; font-weight: bold; color: #2f3542; line-height: 1.5; }
+        
+        .input-area { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .answer-input { padding: 12px 20px; font-size: 20px; border: 2px solid #dfe4ea; border-radius: 12px; outline: none; width: 200px; text-align: center; transition: 0.3s; }
+        .answer-input:focus { border-color: #7bed9f; box-shadow: 0 0 0 3px rgba(123, 237, 159, 0.2); }
+        .submit-btn { padding: 12px 30px; background: #1e90ff; color: #fff; border: none; border-radius: 12px; font-size: 18px; cursor: pointer; transition: 0.2s; font-weight: bold; }
+        .submit-btn:hover { background: #0077cc; transform: translateY(-2px); }
+        
+        .feedback { text-align: center; height: 30px; font-weight: bold; margin-bottom: 10px; font-size: 18px; }
+        .feedback.correct { color: #2ed573; }
+        .feedback.wrong { color: #ff4757; }
+
+        .timer-bar { height: 10px; background: #eee; border-radius: 5px; margin-bottom: 25px; overflow: hidden; }
+        .timer-fill { height: 100%; background: linear-gradient(90deg, #7bed9f, #2ed573); width: 100%; transition: width 1s linear; }
+
+        /* 错题库样式 */
+        .wrong-list { list-style: none; max-height: 500px; overflow-y: auto; }
+        .wrong-item { background: #fff5f5; padding: 15px; border-radius: 12px; margin-bottom: 12px; border-left: 5px solid #ff4757; position: relative; }
+        .wrong-item .q { font-weight: bold; margin-bottom: 8px; font-size: 16px; }
+        .wrong-item .ans-row { display: flex; justify-content: space-between; font-size: 14px; margin-top: 5px; }
+        .wrong-item .my-a { color: #ff4757; }
+        .wrong-item .correct-a { color: #2ed573; font-weight: bold; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #ccc; cursor: pointer; font-size: 18px; }
+        .delete-btn:hover { color: #ff4757; }
+
+        /* 游戏画布通用 */
+        canvas { background: #fff; border-radius: 10px; display: block; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 100%; }
+        
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .hidden { display: none !important; }
+
+        /* 找不同特定样式 */
+        .diff-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+        .diff-canvas { border: 3px solid #dfe4ea; cursor: crosshair; touch-action: none; }
+        .diff-info { text-align: center; font-size: 18px; color: #555; margin-bottom: 15px; }
+        .diff-progress { font-weight: bold; color: #1e90ff; font-size: 20px; }
+    </style>
 </head>
 <body>
+
 <div class="container">
-<h1>🏫 小学同步答题学习系统</h1>
-<div class="continue-count" id="continueText">连续答对：0 题</div>
-<div class="timer-text" id="timerBox"></div>
-<div class="top-bar">
-<div class="grade-wrap">
-<label>选择年级：</label>
-<select id="gradeSelect">
-<option value="1">一年级</option>
-<option value="2">二年级</option>
-<option value="3">三年级</option>
-<option value="4">四年级</option>
-<option value="5">五年级</option>
-<option value="6">六年级</option>
-</select>
-</div>
-<div class="score-info">当前总积分：<span id="scoreNum">0</span>（满30分可玩1分钟小游戏）</div>
-<span class="sound-switch" onclick="switchSound()">🔊 音效开启</span>
-</div>
-<div id="menuBox">
-<!-- 语文板块 -->
-<div class="card card-chinese">
-<h2>📖 语文学习专区</h2>
-<div class="card-desc">拼音认汉字专项练习，夯实生字基础，答对每题+1积分</div>
-<div class="btn-group">
-<button class="sub-btn" onclick="openChinese()">生字闯关（10题）</button>
-<button class="sub-btn" onclick="openMixTest()">数语混合限时30题</button>
-</div>
-</div>
-<!-- 数学板块 -->
-<div class="card card-math">
-<h2>🧮 数学学习专区</h2>
-<div class="card-desc">简单模式：一位数/两位数加减、一位数乘除；困难：两位数加减+乘法</div>
-<div class="btn-group">
-<button class="sub-btn" onclick="openMathEasy()">简单｜一位/两位数加减、乘除</button>
-<button class="sub-btn" onclick="openMathHard()">困难｜两位数加减+乘法</button>
-</div>
-</div>
-<!-- 游戏乐园独立板块 -->
-<div class="card card-game">
-<h2>🎮 游戏乐园（积分兑换游玩）</h2>
-<div class="card-desc">1分钟小游戏消耗30积分｜10分钟贪吃蛇消耗100积分，休闲益智适合8-9岁</div>
-<button class="card-btn" onclick="openGameMall()">进入游戏兑换大厅</button>
-</div>
-</div>
+    <!-- 顶部导航栏 -->
+    <div class="top-bar">
+        <button class="nav-btn btn-home" onclick="showPage('menu')">🏠 返回主页</button>
+        <div class="score-display">⭐ 积分: <span id="scoreDisplay">0</span></div>
+        <button class="nav-btn btn-wrong" onclick="showWrongBook()">📕 错题库 (<span id="wrongCount">0</span>)</button>
+    </div>
 
-<div id="answerBox" class="box hide">
-<div id="gameTitle" style="font-size:20px;font-weight:bold;color:#2266cc;"></div>
-<div id="hammerArea" class="hammer-wrap hide"><div class="hammer">🔨</div></div>
-<div class="question" id="questionText"></div>
-<input id="userInput" placeholder="数学填数字 / 语文填汉字">
-<div class="tip" id="tipText"></div>
-<button class="answer-btn" onclick="checkAnswer()">确定答案</button>
-<div class="wrong-box hide" id="wrongBox">
-<div>📝 错题记录：</div>
-<div id="wrongList"></div>
-</div>
-<button class="back-main" onclick="backMenu()">返回主菜单</button>
-</div>
-</div>
+    <h1>🎓 二年级学习乐园</h1>
 
-<!-- 小游戏选择弹窗 -->
-<div id="gameSelectModal" class="modal hide">
-<div class="modal-content">
-<div class="modal-text">🎉 儿童休闲小游戏大厅</div>
-<div class="result-info" id="gameTimeTip"></div>
-<div style="text-align:left;margin:10px 0;">
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(1)">1. 卡通赛道赛车（躲避小车）</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(2)">2. 晒车停车拖拽挑战</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(3)">3. 打地鼠计分小游戏</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(4)">4. 记忆翻牌配对</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(5)">5. 2048数字合成</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(6)">6. 反应速度测试</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(7)">7. 英文打字闯关</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(8)">8. 人机石头剪刀布</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(9)">9. 气球点击消除</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(10)">10. 数字滑块拼图</button>
-<button class="modal-btn game-list-btn" onclick="checkCostPlay(11)">11. 贪吃蛇（10分钟长时长）</button>
-</div>
-<button class="modal-btn" onclick="closeGameSelect()">返回答题练习</button>
-</div>
-</div>
+    <!-- 1. 主菜单 -->
+    <div id="menu" class="page active">
+        <div class="menu-grid">
+            <div class="menu-card" onclick="startTest('chinese')">
+                <h2>📖 语文挑战</h2>
+                <p>看拼音写汉字 / 量词 / 古诗</p>
+            </div>
+            <div class="menu-card" onclick="startTest('math')">
+                <h2>🔢 数学挑战</h2>
+                <p>乘法口诀 / 加减法 / 单位换算</p>
+            </div>
+            <div class="menu-card" onclick="startGame('snake')">
+                <h2>🐍 贪吃蛇</h2>
+                <p>消耗20积分开启<br>锻炼反应能力</p>
+            </div>
+            <div class="menu-card" onclick="startGame('puzzle')">
+                <h2>🧩 数字华容道</h2>
+                <p>消耗20积分开启<br>锻炼逻辑思维</p>
+            </div>
+            <div class="menu-card" onclick="startGame('finddiff')">
+                <h2>🔍 找不同</h2>
+                <p>消耗10积分开启<br>找出3处不同赢大奖</p>
+            </div>
+        </div>
+    </div>
 
-<!-- 游戏运行弹窗 -->
-<div id="miniGameModal" class="modal hide">
-<div class="modal-content" style="width:95%;max-width:600px;">
-<div class="game-countdown" id="gameCountText"></div>
-<div id="miniGameContent" class="game-container"></div>
-<button class="modal-btn" onclick="exitMiniGame()">游戏时长结束，返回答题</button>
-</div>
-</div>
+    <!-- 2. 测试区 (填空题) -->
+    <div id="testArea" class="page">
+        <div class="game-area">
+            <div class="timer-bar"><div id="timerFill" class="timer-fill"></div></div>
+            <div class="question-box" id="questionText">题目加载中...</div>
+            
+            <div class="input-area">
+                <input type="text" id="answerInput" class="answer-input" placeholder="在此输入答案" autocomplete="off">
+                <button class="submit-btn" onclick="checkAnswer()">提交答案</button>
+            </div>
+            
+            <div id="feedback" class="feedback"></div>
+            <div class="text-center mt-20">
+                <span id="progressText" style="color:#888;">进度: 0/0</span>
+            </div>
+        </div>
+    </div>
 
-<!-- 答题结算弹窗 -->
-<div id="resultModal" class="modal hide"></div>
+    <!-- 3. 游戏区 -->
+    <div id="gameArea" class="page">
+        <div class="game-area text-center">
+            <h2 id="gameTitle" style="color:#2f3542; margin-bottom:10px;">游戏进行中</h2>
+            <p id="gameTip" style="color:#888; font-size:14px;"></p>
+            
+            <!-- 贪吃蛇/华容道画布 -->
+            <canvas id="gameCanvas" width="400" height="400" class="hidden"></canvas>
+            
+            <!-- 找不同画布 -->
+            <div id="diffGameContainer" class="hidden">
+                <div class="diff-info">请点击 <strong>右侧图片</strong> 中不同的地方</div>
+                <div class="diff-wrapper">
+                    <canvas id="diffCanvasLeft" class="diff-canvas" width="300" height="300"></canvas>
+                    <canvas id="diffCanvasRight" class="diff-canvas" width="300" height="300"></canvas>
+                </div>
+                <div class="diff-progress" id="diffProgressText">已找到: 0 / 3</div>
+            </div>
 
-<audio id="soundRight" preload="auto"><source src="https://www.soundjay.com/button/sweet-notification-1.mp3">
-<audio id="soundWrong" preload="auto"><source src="https://www.soundjay.com/button/error-1.mp3">
-<audio id="soundPass" preload="auto"><source src="https://www.soundjay.com/game/level-up-1.mp3">
-<audio id="soundFail" preload="auto"><source src="https://www.soundjay.com/game/fail-1.mp3">
-<audio id="soundClick" preload="auto"><source src="https://www.soundjay.com/button/click-1.mp3">
+            <div id="gameScoreBoard" style="font-size:20px; font-weight:bold; color:#ffa502; margin:10px 0;" class="hidden">得分: 0</div>
+            <button class="submit-btn mt-20" onclick="stopGame()">结束游戏</button>
+        </div>
+    </div>
+
+    <!-- 4. 错题库页 -->
+    <div id="wrongArea" class="page">
+        <div class="game-area">
+            <h2 style="margin-bottom:20px; color:#ff4757; border-bottom:2px solid #eee; padding-bottom:10px;">📕 我的错题库</h2>
+            <ul id="wrongList" class="wrong-list"></ul>
+            <div id="emptyWrong" class="text-center mt-20" style="color:#888; padding:40px;">
+                <div style="font-size:40px; margin-bottom:10px;">🎉</div>
+                太棒了！暂无错题，继续保持！
+            </div>
+            <div class="text-center mt-20">
+                <button class="submit-btn" onclick="showPage('menu')">返回主页</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-// 全局变量
-let mathLevel = 1;
-let chineseLevel = 1;
-let totalScore = 0;
-const QUESTION_NUM = 10;
-const PASS_LINE = 6;
-let soundOpen = true;
-let mathMode = "easy";
-let timerInterval = null;
-const TEST_TOTAL = 30;
-const TEST_LIMIT_SEC = 120;
-let testRemainSec = TEST_LIMIT_SEC;
-let testNowIndex = 0;
-let testScore = 0;
-let testWrongList = [];
-let isTestMode = false;
-let gameTimer = null;
-let gameTotalSec = 60;
-let currentGameId = 0;
-let continueCorrect = 0;
+    // ==================== 全局状态 ====================
+    const AppState = {
+        score: parseInt(localStorage.getItem('study_score') || '0'),
+        wrongBook: JSON.parse(localStorage.getItem('study_wrong') || '[]'),
+        answeredHistory: JSON.parse(localStorage.getItem('study_history') || '{}'),
+        currentTest: {
+            type: '',
+            questions: [],
+            index: 0,
+            timer: null,
+            timeLeft: 0
+        },
+        game: {
+            active: false,
+            type: '',
+            interval: null,
+            ctx: null,
+            canvas: null,
+            // 找不同专用状态
+            diffFound: [],
+            diffTargets: []
+        }
+    };
 
-// 语文词库
-const wordLib = {
-"bà ba":"爸爸","mā ma":"妈妈","xuě huā":"雪花","shuǐ tián":"水田",
-"shū bāo":"书包","xià yǔ":"下雨","zì jǐ":"自己","dōng xī":"东西",
-"shàng xué":"上学","shuǐ guǒ":"水果","fēng yè":"枫叶","míng tiān":"明天",
-"gōng chǎng":"工厂","shǒu xīn":"手心","chūn tiān":"春天","xiǎo niǎo":"小鸟",
-"zhú zi":"竹子","hé miáo":"禾苗","lǐ zi":"李子","dà xiàng":"大象",
-"qīng shuǐ":"清水","xīn kǔ":"辛苦","shù yè":"树叶","zhǎng dà":"长大",
-"tián lǐ":"田里","shuǐ niú":"水牛","xiǎo chóng":"小虫","duō shǎo":"多少",
-"lái qù":"来去","shàng xià":"上下","zuǒ yòu":"左右","dōng běi":"东北",
-"xī nán":"西南","bà wáng":"霸王","wǒ men":"我们","nǐ men":"你们",
-"tā men":"他们","nǚ ér":"女儿","ér zi":"儿子","kāi xīn":"开心",
-"fēng yǔ":"风雨","shān shuǐ":"山水","rì yuè":"日月","shuǐ huǒ":"水火",
-"bái yún":"白云","tiān kōng":"天空","xià miàn":"下面","shàng miàn":"上面",
-"qián hòu":"前后","gāo dī":"高低","cháng duǎn":"长短","dà xiǎo":"大小"
-};
-const pinyinArr = Object.keys(wordLib);
+    // ==================== 题库数据 ====================
+    const QuestionBank = {
+        chinese: [
+            { q: "看拼音写汉字：chūn tiān", answers: ["春天"] },
+            { q: "看拼音写汉字：dōng xuě", answers: ["冬雪"] },
+            { q: "看拼音写汉字：fēi niǎo", answers: ["飞鸟"] },
+            { q: "看拼音写汉字：huā duǒ", answers: ["花朵"] },
+            { q: "看拼音写汉字：xuě huā", answers: ["雪花"] },
+            { q: "看拼音写汉字：zuǒ yòu", answers: ["左右"] },
+            { q: "看拼音写汉字：tài yáng", answers: ["太阳"] },
+            { q: "看拼音写汉字：yuè liang", answers: ["月亮"] },
+            { q: "看拼音写汉字：xīng xing", answers: ["星星"] },
+            { q: "看拼音写汉字：yǔ wén", answers: ["语文"] },
+            { q: "一（ ）书 (填量词)", answers: ["本"] },
+            { q: "‘床前明月光’的下一句是？", answers: ["疑是地上霜"] },
+            { q: "一（ ）牛 (填量词)", answers: ["头"] },
+            { q: "‘白日依山尽’的下一句是？", answers: ["黄河入海流"] },
+            { q: "一（ ）马 (填量词)", answers: ["匹"] },
+            { q: "‘春眠不觉晓’的下一句是？", answers: ["处处闻啼鸟"] }
+        ],
+        math: [
+            { q: "3 × 4 = ?", answers: ["12"] },
+            { q: "5 × 6 = ?", answers: ["30"] },
+            { q: "45 + 32 = ?", answers: ["77"] },
+            { q: "1米 = ( )厘米", answers: ["100"] },
+            { q: "角有几个顶点？", answers: ["1"] },
+            { q: "7 × 8 = ?", answers: ["56"] },
+            { q: "90 - 45 = ?", answers: ["45"] },
+            { q: "课桌高约70( ) (填单位)", answers: ["厘米"] },
+            { q: "直角是多少度？", answers: ["90"] },
+            { q: "6 × 9 = ?", answers: ["54"] }
+        ]
+    };
 
-let nowMode = "";
-let nowQuesList = [];
-let nowIndex = 0;
-let correctCnt = 0;
-let wrongLogs = [];
+    // ==================== 初始化与工具 ====================
+    window.onload = function() {
+        updateUI();
+        document.getElementById('answerInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkAnswer();
+        });
+    };
 
-// 工具函数
-function playSound(id) {
-if (!soundOpen) return;
-try{document.getElementById(id).volume=0.4;document.getElementById(id).currentTime=0;document.getElementById(id).play();}catch(e){}
-}
-function switchSound() {
-soundOpen=!soundOpen;document.querySelector(".sound-switch").innerText=soundOpen?"🔊 音效开启":"🔇 音效关闭";
-}
-function refreshScore() {
-document.getElementById("scoreNum").innerText=`${totalScore}`;
-document.getElementById("continueText").innerText=`连续答对：${continueCorrect} 题`;
-}
-function clearTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}document.getElementById("timerBox").innerText="";}
-function showGame() {
-document.getElementById("menuBox").classList.add("hide");
-document.getElementById("answerBox").classList.remove("hide");
-document.getElementById("answerBox").classList.add("active");
-document.getElementById("wrongBox").classList.add("hide");
-document.getElementById("tipText").innerText="";
-document.getElementById("userInput").value="";
-document.getElementById("hammerArea").classList.add("hide");
-resetInputStyle();
-}
-function backMenu() {
-clearTimer();isTestMode=false;playSound("soundClick");
-document.getElementById("menuBox").classList.remove("hide");
-document.getElementById("answerBox").classList.remove("active");
-closeAllModal();
-}
-function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-function closeAllModal(){
-document.getElementById("resultModal").classList.add("hide");
-document.getElementById("gameSelectModal").classList.add("hide");
-document.getElementById("miniGameModal").classList.add("hide");
-if(gameTimer){clearInterval(gameTimer);gameTimer=null;}
-}
+    function updateUI() {
+        document.getElementById('scoreDisplay').textContent = AppState.score;
+        document.getElementById('wrongCount').textContent = AppState.wrongBook.length;
+        localStorage.setItem('study_score', AppState.score);
+        localStorage.setItem('study_wrong', JSON.stringify(AppState.wrongBook));
+        localStorage.setItem('study_history', JSON.stringify(AppState.answeredHistory));
+    }
 
-// ========== 数学题型 ==========
-// 一位数加减法 1~9
-function createOneAddSub(){
-let a=rnd(1,9),b=rnd(1,9),op=Math.random()>0.5?"+":"-",ans;
-if(op=="-"&&a<b){let t=a;a=b;b=t;}
-ans=op=="+"?a+b:a-b;
-return {type:"math",q:`${a} ${op} ${b} = ?`,a:ans};
-}
-// 两位数10~99加减
-function createTwoDigitAddSub(){
-let a=rnd(10,99),b=rnd(10,99),op=Math.random()>0.5?"+":"-",ans;
-if(op=="-"&&a<b){let t=a;a=b;b=t;}
-ans=op=="+"?a+b:a-b;
-return {type:"math",q:`${a} ${op} ${b} = ?`,a:ans};
-}
-// 一位数乘法
-function createOneMulti(){
-let a=rnd(1,9),b=rnd(1,9);
-return {type:"math",q:`${a} × ${b} = ?`,a:a*b};
-}
-// 一位数整除除法（无余数）
-function createOneDiv(){
-let b=rnd(2,9);let ans=rnd(1,9);let a=b*ans;
-return {type:"math",q:`${a} ÷ ${b} = ?`,a:ans};
-}
-// 元角分换算
-function createMoney(){
-let t=rnd(1,3),q,ans;
-if(t==1){let y=rnd(1,10);q=`${y}元 = ？分`;ans=y*100;}
-else if(t==2){let j=rnd(1,9);q=`${j}角 = ？分`;ans=j*10;}
-else{let y=rnd(1,5),j=rnd(1,9);q=`${y}元${j}角 = ？分`;ans=y*100+j*10;}
-return {type:"math",q,a:ans};
-}
-// 时分换算
-function createTimeCalc(){
-let t=rnd(1,2),q,ans;
-if(t==1){let h=rnd(1,4);q=`${h}时 = ？分`;ans=h*60;}
-else{let h=rnd(1,2),m=rnd(1,50);q=`${h}时${m}分 = ？分`;ans=h*60+m;}
-return {type:"math",q,a:ans};
-}
-// 语文拼音生字题
-function createChineseQues(){
-let py = pinyinArr[rnd(0,pinyinArr.length-1)];
-return {type:"chinese",q:`拼音：${py} 写汉字`,a:wordLib[py],py:py};
-}
+    function showPage(pageId) {
+        clearInterval(AppState.currentTest.timer);
+        stopGameLogic();
+        
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        
+        let targetId = 'menu';
+        if (pageId === 'test') targetId = 'testArea';
+        else if (pageId === 'game') targetId = 'gameArea';
+        else if (pageId === 'wrong') targetId = 'wrongArea';
+        
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) targetEl.classList.add('active');
+        
+        if (pageId === 'wrong') renderWrongBook();
+        updateUI();
+    }
 
-// 数学简单模式：随机一位加减/两位加减/一位乘/一位除
-function openMathEasy() {
-clearTimer();isTestMode=false;playSound("soundClick");nowMode="math";mathMode="easy";continueCorrect=0;
-showGame();
-document.getElementById("gameTitle").innerText="🧮 数学简单｜一位/两位数加减、一位数乘除";
-nowQuesList=[];
-for(let i=0;i<QUESTION_NUM;i++){
-let rand=rnd(1,4);
-if(rand===1) nowQuesList.push(createOneAddSub());
-else if(rand===2) nowQuesList.push(createTwoDigitAddSub());
-else if(rand===3) nowQuesList.push(createOneMulti());
-else nowQuesList.push(createOneDiv());
-}
-nowIndex=0;correctCnt=0;wrongLogs=[];refreshScore();showQues();
-}
-// 数学困难模式：两位数加减+乘法
-function openMathHard() {
-clearTimer();isTestMode=false;playSound("soundClick");nowMode="math";mathMode="hard";continueCorrect=0;
-showGame();
-document.getElementById("gameTitle").innerText="🧮 数学困难｜两位数加减+乘法";
-nowQuesList=[];
-for(let i=0;i<QUESTION_NUM;i++){
-if(Math.random()>0.5) nowQuesList.push(createTwoDigitAddSub());
-else nowQuesList.push(createOneMulti());
-}
-nowIndex=0;correctCnt=0;wrongLogs=[];refreshScore();showQues();
-}
-// 语文生字闯关
-function openChinese() {
-clearTimer();isTestMode=false;playSound("soundClick");nowMode="chinese";continueCorrect=0;
-showGame();
-document.getElementById("gameTitle").innerText="📖 语文生字闯关";
-let shuffle=[...pinyinArr].sort(()=>Math.random()-0.5),select=shuffle.slice(0,10);
-nowQuesList=[];for(let i=0;i<select.length;i++){let py=select[i];nowQuesList.push({type:"chinese",q:`拼音：${py} 写汉字`,a:wordLib[py],py});}
-nowIndex=0;correctCnt=0;wrongLogs=[];refreshScore();showQues();
-}
-// 数语混合限时30题测试
-function openMixTest() {
-clearTimer();isTestMode=true;playSound("soundClick");nowMode="test";continueCorrect=0;
-showGame();
-document.getElementById("gameTitle").innerText="⏱ 30题数语混合限时测试（2分钟）";
-testNowIndex=0;testScore=0;testWrongList=[];testRemainSec=TEST_LIMIT_SEC;nowQuesList=[];
-for(let i=0;i<TEST_TOTAL;i++){
-let rand=rnd(1,5);
-if(rand==1) nowQuesList.push(createOneAddSub());
-else if(rand==2) nowQuesList.push(createTwoDigitAddSub());
-else if(rand==3) nowQuesList.push(createOneMulti());
-else if(rand==4) nowQuesList.push(createOneDiv());
-else nowQuesList.push(createChineseQues());
-}
-timerInterval=setInterval(()=>{
-testRemainSec--;let m=Math.floor(testRemainSec/60),s=testRemainSec%60;
-document.getElementById("timerBox").innerText=`剩余：${m}分${s}秒 | 第${testNowIndex+1}/30 | 当前得分：${testScore}`;
-if(testRemainSec<=0){clearTimer();alert("2分钟时间到，自动交卷！");endTestResult();}
-},1000);
-refreshScore();showQues();
-}
+    // ==================== 智能去重抽题 ====================
+    function getUniqueQuestions(type, count) {
+        const bank = QuestionBank[type];
+        if (!AppState.answeredHistory[type]) AppState.answeredHistory[type] = [];
+        
+        let history = AppState.answeredHistory[type];
+        let availableIndices = bank.map((_, i) => i).filter(i => !history.includes(i));
+        
+        if (availableIndices.length < count) {
+            AppState.answeredHistory[type] = [];
+            history = [];
+            availableIndices = bank.map((_, i) => i);
+        }
+        
+        availableIndices.sort(() => Math.random() - 0.5);
+        const selectedIndices = availableIndices.slice(0, count);
+        
+        selectedIndices.forEach(idx => {
+            if (!AppState.answeredHistory[type].includes(idx)) {
+                AppState.answeredHistory[type].push(idx);
+            }
+        });
+        
+        return selectedIndices.map(idx => bank[idx]);
+    }
 
-// 渲染题目
-function showQues() {
-closeAllModal();
-if(isTestMode){
-if(testNowIndex>=TEST_TOTAL){clearTimer();endTestResult();return;}
-document.getElementById("questionText").innerText=nowQuesList[testNowIndex].q;
-}else{
-if(nowIndex>=nowQuesList.length){endRound();return;}
-document.getElementById("questionText").innerText=nowQuesList[nowIndex].q;
-}
-document.getElementById("userInput").value="";document.getElementById("tipText").innerText="";document.getElementById("hammerArea").classList.add("hide");
-}
-function hideModal(){playSound("soundClick");document.getElementById("resultModal").classList.add("hide");}
-function showSuccessModal(){
-let m=document.getElementById("resultModal");m.classList.remove("hide");
-m.innerHTML='<div class="modal-content"><div style="font-size:55px;">🎉🏅🎉</div><div class="modal-text" style="color:#00b42a;">回答正确</div><div style="font-size:18px;color:#666;">积分+1，继续努力</div><button class="modal-btn" onclick="hideModal()">继续答题</button></div>';
-}
-function showErrorModal(rightAns){
-let m=document.getElementById("resultModal");m.classList.remove("hide");
-m.innerHTML=`
-<div class="modal-content">
-<div style="font-size:55px;">😵💥</div>
-<div class="modal-text" style="color:#f53f3f;">答错被锤子砸头！</div>
-<div class="correct-ans">正确答案：${rightAns}</div>
-<div style="font-size:18px;color:#666;">认真记住知识点</div>
-<button class="modal-btn" onclick="hideModal()">继续答题</button>
-</div>`;
-}
-function playHammerAnimation(){
-let hammer=document.getElementById("hammerArea"),qText=document.getElementById("questionText");
-hammer.classList.add("hide");void hammer.offsetWidth;hammer.classList.remove("hide");
-qText.classList.remove("shake-target");void qText.offsetWidth;qText.classList.add("shake-target");
-setTimeout(()=>{hammer.classList.add("hide");qText.classList.remove("shake-target");},500);
-}
+    // ==================== 测试模块 ====================
+    function startTest(type) {
+        AppState.currentTest.type = type;
+        AppState.currentTest.questions = getUniqueQuestions(type, 5);
+        AppState.currentTest.index = 0;
+        AppState.currentTest.timeLeft = 60;
+        
+        showPage('test');
+        renderQuestion();
+        startTimer();
+    }
 
-// 答题判断逻辑
-function checkAnswer() {
-let val=document.getElementById("userInput").value.trim();
-let targetItem = isTestMode ? nowQuesList[testNowIndex] : nowQuesList[nowIndex];
-let right = targetItem.a;
-let ok = false;
-if(targetItem.type == "math"){
-if(val===""||isNaN(val)){document.getElementById("tipText").innerText="数学题目请输入纯数字！";return;}
-ok = parseInt(val) === right;
-}else{
-if(val===""){document.getElementById("tipText").innerText="语文题目请输入汉字！";return;}
-ok = val === right;
-}
-if (ok) {
-playSound("soundRight");continueCorrect++;
-if(!isTestMode){totalScore+=1;correctCnt+=1;showSuccessModal();document.getElementById("tipText").innerText="✅ 回答正确 +1积分";document.getElementById("tipText").className="tip pass";refreshScore();}
-else{testScore++;document.getElementById("tipText").innerText="✅ 答对 +1分";document.getElementById("tipText").className="tip pass";}
-}else{
-playSound("soundWrong");continueCorrect=0;
-if(!isTestMode&&totalScore>0)totalScore-=1;
-playHammerAnimation();showErrorModal(right);
-document.getElementById("tipText").innerText=`❌ 答错，正确答案：${right}`;document.getElementById("tipText").className="tip fail";
-if(isTestMode) testWrongList.push(`${targetItem.q} 你写：${val} 正确：${right}`);
-else wrongLogs.push((targetItem.type=="math"?targetItem.q:`拼音${targetItem.py} 你写：${val} 正确：${right}`));
-}
-refreshScore();
-if(isTestMode){testNowIndex++;setTimeout(showQues,1200);}
-else{nowIndex++;setTimeout(showQues,1500);}
-}
+    function renderQuestion() {
+        const test = AppState.currentTest;
+        if (test.index >= test.questions.length) {
+            endTest();
+            return;
+        }
+        
+        const q = test.questions[test.index];
+        document.getElementById('questionText').textContent = q.q;
+        document.getElementById('progressText').textContent = `进度: ${test.index + 1} / ${test.questions.length}`;
+        
+        const input = document.getElementById('answerInput');
+        input.value = '';
+        input.disabled = false;
+        input.focus();
+        
+        const feedback = document.getElementById('feedback');
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+    }
 
-// 闯关结算弹窗
-function endRound() {
-let pass=correctCnt>=PASS_LINE;pass?playSound("soundPass"):playSound("soundFail");
-document.getElementById("userInput").style.display="none";document.querySelector(".answer-btn").style.display="none";
-if(pass){nowMode=="math"?mathLevel++:chineseLevel++;
-let m=document.getElementById("resultModal");m.classList.remove("hide");
-m.innerHTML=`
-<div class="modal-content award-box">
-<div style="font-size:60px;">🎖️🏆🎖️</div>
-<div class="modal-text" style="color:#ff9900;font-size:28px;">闯关成功，获得奖状</div>
-<div class="result-info">本关答对：${correctCnt}/${QUESTION_NUM} 题</div>
-<div class="result-info">总积分：${totalScore} 分</div>
-<div style="color:#2266cc;margin-top:10px;">自动解锁下一关</div>
-<button class="modal-btn" onclick="hideModal()" style="margin-top:20px;">收下奖状</button>
-</div>`;
-}
-let msg=`本关练习完成！答对${correctCnt}/${QUESTION_NUM}题\n${pass?"🎉 通关解锁下一关":"💪 未达标，重新练习巩固"}`;
-document.getElementById("questionText").innerText=msg;
-if(wrongLogs.length>0){document.getElementById("wrongBox").classList.remove("hide");document.getElementById("wrongList").innerText=wrongLogs.join("\n");}
-else{document.getElementById("wrongBox").classList.remove("hide");document.getElementById("wrongList").innerText="✅ 全部答对无错题！";}
-refreshScore();
-}
-// 限时测试结算
-function endTestResult(){
-clearTimer();let useSec=Math.floor((Date.now()-testStartTime)/1000),useMin=Math.floor(useSec/60),useS=useSec%60;
-let wrongNum=testWrongList.length,rate=((testScore/TEST_TOTAL)*100).toFixed(1);
-document.getElementById("userInput").style.display="none";document.querySelector(".answer-btn").style.display="none";
-let m=document.getElementById("resultModal");m.classList.remove("hide");
-let html=`<div class="modal-content">
-<div style="font-size:48px;">📝</div>
-<div class="modal-text">限时混合测试结束（30题）</div>
-<div class="result-info">总题目：${TEST_TOTAL} 答对：${testScore} 答错：${wrongNum}</div>
-<div class="result-info">得分：${testScore} 分 | 正确率：${rate}%</div>
-<div class="result-info">用时：${useMin}分${useS}秒</div>`;
-if(testWrongList.length>0) html+=`<div style="margin-top:10px;text-align:left;font-size:14px;max-height:180px;overflow-y:auto;">错题一览：\n${testWrongList.join("\n")}</div>`;
-else html+=`<div style="margin-top:10px;color:#00b42a;">恭喜30道题目全部满分！</div>`;
-html+=`<button class="modal-btn" onclick="hideModal()">回看答题页面</button><button class="modal-btn" onclick="backMenu()" style="margin-top:10px;background:#888;">返回主菜单</button></div>`;
-m.innerHTML=html;
-let msg=`混合测试结束！一共30题\n得分${testScore}，正确率${rate}%`;
-document.getElementById("questionText").innerText=msg;
-if(testWrongList.length>0){document.getElementById("wrongBox").classList.remove("hide");document.getElementById("wrongList").innerText=testWrongList.join("\n");}
-else{document.getElementById("wrongBox").classList.remove("hide");document.getElementById("wrongList").innerText="✅ 满分无错题！";}
-}
-function resetInputStyle(){document.getElementById("userInput").style.display="inline-block";document.querySelector(".answer-btn").style.display="inline-block";}
-// 全局重置全部数据
-function resetAll(){
-clearTimer();closeAllModal();isTestMode=false;gameTimer=null;
-playSound("soundClick");mathLevel=1;chineseLevel=1;totalScore=0;continueCorrect=0;testScore=0;
-refreshScore();alert("✅ 所有关卡、积分、测试记录、连续答题记录全部重置清空");
-}
+    function checkAnswer() {
+        const test = AppState.currentTest;
+        if (test.index >= test.questions.length) return;
+        
+        const input = document.getElementById('answerInput');
+        const userVal = input.value.trim();
+        
+        if (!userVal) {
+            alert("请输入答案哦！");
+            return;
+        }
+        
+        input.disabled = true;
+        const q = test.questions[test.index];
+        const isCorrect = q.answers.some(ans => ans.toLowerCase() === userVal.toLowerCase());
+        
+        const feedback = document.getElementById('feedback');
+        
+        if (isCorrect) {
+            feedback.textContent = '✅ 回答正确！+1分';
+            feedback.classList.add('correct');
+            AppState.score += 1;
+        } else {
+            feedback.textContent = `❌ 回答错误。正确答案是: ${q.answers[0]}`;
+            feedback.classList.add('wrong');
+            addToWrongBook(q, userVal);
+        }
+        
+        updateUI();
+        
+        setTimeout(() => {
+            AppState.currentTest.index++;
+            renderQuestion();
+        }, 1500);
+    }
 
-// ====================== 游戏兑换大厅逻辑 ======================
-function openGameMall() {
-closeAllModal();gameTotalSec=60;
-let tip = "积分兑换：30积分=1分钟小游戏 / 100积分=10分钟贪吃蛇长时长游戏，先答题练习积攒积分";
-document.getElementById("gameTimeTip").innerText=tip;
-document.getElementById("gameSelectModal").classList.remove("hide");
-}
-function closeGameSelect(){document.getElementById("gameSelectModal").classList.add("hide");}
-// 校验扣减积分
-function checkCostPlay(gameId) {
-let cost = gameId === 11 ? 100 : 30;
-if(totalScore < cost){
-alert(`积分不足！当前${totalScore}分，需要${cost}分，请先完成答题练习攒积分！`);
-return;
-}
-totalScore -= cost;
-refreshScore();
-gameTotalSec = gameId === 11 ? 600 : 60;
-openMiniGame(gameId);
-}
-function openMiniGame(gameId) {
-currentGameId=gameId;closeGameSelect();
-document.getElementById("miniGameModal").classList.remove("hide");
-let gameBox=document.getElementById("miniGameContent");
-let remain=gameTotalSec;
-if(gameTimer) clearInterval(gameTimer);
-document.getElementById("gameCountText").innerText=`游戏剩余时长：${Math.floor(remain/60)}分${remain%60}秒`;
-gameTimer=setInterval(()=>{
-remain--;let m=Math.floor(remain/60),s=remain%60;
-document.getElementById("gameCountText").innerText=`游戏剩余时长：${m}分${s}秒`;
-if(remain<=0){clearInterval(gameTimer);alert("游戏时长结束，自动退出游戏");exitMiniGame();}
-},1000);
-switch(gameId){
-case 1: renderRaceCar(gameBox); break; // 新增卡通赛车
-case 2: renderParking(gameBox); break;
-case 3: renderMole(gameBox); break;
-case 4: renderMemory(gameBox); break;
-case 5: render2048(gameBox); break;
-case 6: renderReaction(gameBox); break;
-case 7: renderType(gameBox); break;
-case 8: renderRPS(gameBox); break;
-case 9: renderBalloon(gameBox); break;
-case 10: renderPuzzle(gameBox); break;
-case 11: renderSnake(gameBox); break;
-}
-}
-function exitMiniGame(){
-if(gameTimer){clearInterval(gameTimer);gameTimer=null;}
-document.getElementById("miniGameModal").classList.add("hide");
-document.getElementById("miniGameContent").innerHTML="";
-}
-// 全局石头剪刀布函数
-window.playRPS = function(u){
-let c=rnd(1,3),txt=["石头","剪刀","布"],res;
-if(u==c) res="平局";
-else if((u==1&&c==2)||(u==2&&c==3)||(u==3&&c==1)) res="你赢了";
-else res="电脑赢";
-document.getElementById("rpsResult").innerText=`你：${txt[u-1]} 电脑：${txt[c-1]} → ${res}`;
-}
+    function startTimer() {
+        const fill = document.getElementById('timerFill');
+        clearInterval(AppState.currentTest.timer);
+        
+        AppState.currentTest.timer = setInterval(() => {
+            AppState.currentTest.timeLeft--;
+            const pct = (AppState.currentTest.timeLeft / 60) * 100;
+            fill.style.width = `${pct}%`;
+            
+            if (AppState.currentTest.timeLeft <= 0) {
+                endTest();
+            }
+        }, 1000);
+    }
 
-// ========== 1.新增卡通赛道赛车游戏（适配8-9岁儿童） ==========
-function renderRaceCar(box){
-box.innerHTML=`
-<h3>卡通赛车躲避挑战｜← → 左右方向键控制小车</h3>
-<canvas id="raceCanvas" width="360" height="520" style="background:#789078;border-radius:8px;"></canvas>
-<p>得分：<span id="raceScore">0</span>｜躲避前方小车，不要相撞！速度慢慢变快</p>`;
-let canvas=document.getElementById("raceCanvas"),ctx=canvas.getContext("2d");
-let carX=140,carY=440,carW=80,carH=100;
-let roadLanes=[40,140,240];
-let obstacles=[];
-let score=0,speed=2;
-let keys={ArrowLeft:false,ArrowRight:false};
-document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")keys.ArrowLeft=true;if(e.key==="ArrowRight")keys.ArrowRight=true;});
-document.addEventListener("keyup",e=>{if(e.key==="ArrowLeft")keys.ArrowLeft=false;if(e.key==="ArrowRight")keys.ArrowRight=false;});
-function createObstacle(){
-let lane=roadLanes[rnd(0,2)];
-obstacles.push({x:lane,y:-100,w:80,h:100});
-}
-function drawRoad(){
-ctx.fillStyle="#666666";ctx.fillRect(30,0,300,520);
-ctx.fillStyle="#ffffff";ctx.fillRect(178,0,4,520);
-ctx.fillRect(78,0,4,520);ctx.fillRect(278,0,4,520);
-}
-function drawPlayerCar(){
-ctx.fillStyle="#4285F4";ctx.fillRect(carX,carY,carW,carH);
-ctx.fillStyle="#333";ctx.fillRect(carX+10,carY+10,60,30);
-}
-function drawObstacle(obj){
-ctx.fillStyle="#EA4335";ctx.fillRect(obj.x,obj.y,obj.w,obj.h);
-ctx.fillStyle="#222";ctx.fillRect(obj.x+10,obj.y+10,60,30);
-}
-function checkCollision(a,b){
-return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
-}
-function loop(){
-ctx.clearRect(0,0,360,520);
-drawRoad();
-// 左右移动
-if(keys.ArrowLeft&&carX>35) carX-=6;
-if(keys.ArrowRight&&carX<245) carX+=6;
-// 生成障碍物
-if(rnd(1,100)<2.2) createObstacle();
-// 更新障碍物
-for(let i=obstacles.length-1;i>=0;i--){
-let o=obstacles[i];
-o.y+=speed;
-drawObstacle(o);
-if(checkCollision({x:carX,y:carY,w:carW,h:carH},o)){
-alert("撞到小车啦！本次得分："+score);obstacles=[];score=0;speed=2;document.getElementById("raceScore").innerText=score;
-}
-if(o.y>530){obstacles.splice(i,1);score+=10;speed+=0.04;document.getElementById("raceScore").innerText=score;}
-}
-drawPlayerCar();
-requestAnimationFrame(loop);
-}
-loop();
-}
-// 2.晒车停车拖拽
-function renderParking(box){
-box.innerHTML=`
-<h3>晒车停车挑战（拖拽小车放入虚线车位）</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
-<div draggable="true" id="car" style="padding:15px;background:#40a9ff;border-radius:8px;color:white;font-size:24px;">🚗小车</div>
-<div id="slot1" style="padding:15px;border:2px dashed #999;border-radius:8px;">车位1</div>
-<div id="slot2" style="padding:15px;border:2px dashed #999;border-radius:8px;">车位2</div>
-<div id="slot3" style="padding:15px;border:2px dashed #999;border-radius:8px;">车位3</div>
-</div>
-<p style="margin-top:10px;">拖拽小车到虚线区域即可停车成功</p>`;
-let car=document.getElementById("car"),slots=[document.getElementById("slot1"),document.getElementById("slot2"),document.getElementById("slot3")];
-car.ondragstart=e=>e.dataTransfer.setData("text","car");
-slots.forEach(s=>{s.ondragover=e=>e.preventDefault();s.ondrop=e=>{e.preventDefault();s.innerText="✅ 停车成功！";s.style.background="#42b983";s.style.color="white";}})
-}
-//3.打地鼠
-function renderMole(box){
-box.innerHTML=`<h3>打地鼠计分小游戏</h3>
-<div style="display:grid;grid-template-columns:repeat(3,60px);gap:8px;margin:15px auto;width:fit-content;">
-<div class="mole-hole" data-id="0" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-<div class="mole-hole" data-id="1" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-<div class="mole-hole" data-id="2" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-<div class="mole-hole" data-id="3" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-<div class="mole-hole" data-id="4" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-<div class="mole-hole" data-id="5" style="width:60px;height:60px;background:#999;border-radius:50%;font-size:32px;line-height:60px;cursor:pointer;"></div>
-</div>
-<p>得分：<span id="moleScore">0</span></p>`;
-let holes=box.querySelectorAll(".mole-hole"),score=0;
-holes.forEach(h=>h.onclick=()=>{if(h.innerText=="🐹"){score++;document.getElementById("moleScore").innerText=score;h.innerText="";}});
-function pop(){holes.forEach(h=>h.innerText="");let r=holes[rnd(0,5)];r.innerText="🐹";setTimeout(pop,800);}pop();
-}
-//4.记忆翻牌
-function renderMemory(box){
-let arr=[1,1,2,2,3,3,4,4,5,5];arr.sort(()=>Math.random()-0.5);
-let html="<h3>记忆翻牌配对小游戏</h3><div style='display:grid;grid-template-columns:repeat(5,50px);gap:6px;margin:10px auto;width:fit-content;'>";
-arr.forEach(n=>html+=`<div class="mem-card" data-val="${n}" style="width:50px;height:50px;background:#666;color:white;line-height:50px;font-size:20px;cursor:pointer;">?</div>`);
-html+="</div>";
-box.innerHTML=html;
-let cards=box.querySelectorAll(".mem-card"),open=[],lock=false;
-cards.forEach(c=>c.onclick=()=>{
-if(lock||c.innerText!="?")return;c.innerText=c.dataset.val;open.push(c);
-if(open.length==2){lock=true;let [a,b]=open;
-if(a.dataset.val!=b.dataset.val)setTimeout(()=>{a.innerText="?";b.innerText="?";lock=false;open=[];},800);
-else{lock=false;open=[];}
-}
-})
-}
-//5.2048数字合成
-function render2048(box){
-box.innerHTML=`<h3>2048数字合成</h3><p>方向键上下左右移动合并数字</p><div id="board2048" style="display:grid;grid-template-columns:repeat(4,60px);gap:4px;margin:10px auto;width:fit-content;"></div>`;
-let grid=Array(16).fill(0);
-function fill(){let b=document.getElementById("board2048");b.innerHTML="";grid.forEach(n=>{let d=document.createElement("div");d.style.width="60px";d.style.height="60px";d.style.background=n?`#${n*20}9`:"#ddd";d.style.lineHeight="60px";d.style.fontSize="22px";d.innerText=n||"";b.appendChild(d);})}
-function add(){let empty=grid.filter((v,i)=>v==0);if(empty.length<1)return;let pos=empty[rnd(0,empty.length-1)];grid[pos]=Math.random()>0.75?4:2;fill();}
-fill();add();
-document.onkeydown=e=>{if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key))add();}
-}
-//6.反应测试
-function renderReaction(box){
-box.innerHTML=`<h3>反应速度测试</h3><div id="reactBox" style="width:200px;height:200px;background:#ddd;margin:15px auto;line-height:200px;font-size:22px;cursor:pointer;">点击开始</div><p id="reactTip"></p>`;
-let rBox=document.getElementById("reactBox");
-rBox.onclick=()=>{
-if(rBox.innerText=="点击开始"){rBox.innerText="等待变绿...";rBox.style.background="#ddd";
-setTimeout(()=>{let startT=Date.now();rBox.innerText="立刻点击！";rBox.style.background="#42b983";
-rBox.onclick=()=>{let ms=Date.now()-startT;document.getElementById("reactTip").innerText=`反应：${ms}毫秒`;rBox.innerText="点击重测";rBox.style.background="#ddd";rBox.onclick=null;}
-},rnd(1000,3000));
-}
-}
-}
-//7.英文打字
-function renderType(box){
-let words=["apple","book","desk","sun","cat","dog","bird","pen","tree","fish"];
-let target=words[rnd(0,words.length-1)];
-box.innerHTML=`<h3>英文打字闯关</h3><p>输入单词：<span style="font-size:24px;color:red;">${target}</span></p><input id="typeInput" placeholder="输入单词" style="width:200px;padding:10px;margin:10px 0;"><p id="typeTip"></p>`;
-let inp=document.getElementById("typeInput");
-inp.oninput=()=>{if(inp.value==target){document.getElementById("typeTip").innerText="✅ 输入正确！";inp.disabled=true;}}
-}
-//8.石头剪刀布
-function renderRPS(box){
-box.innerHTML=`<h3>人机石头剪刀布</h3><button class="modal-btn" onclick="playRPS(1)">石头</button><button class="modal-btn" onclick="playRPS(2)">剪刀</button><button class="modal-btn" onclick="playRPS(3)">布</button><p id="rpsResult" style="margin-top:15px;"></p>`;
-}
-//9.气球消除
-function renderBalloon(box){
-box.innerHTML=`<h3>点击消除气球</h3><div id="ballWrap" style="height:220px;position:relative;"></div><p>得分：<span id="ballScore">0</span></p>`;
-let wrap=document.getElementById("ballWrap"),score=0;
-function add(){
-let b=document.createElement("div");b.style.position="absolute";b.style.fontSize="40px";b.innerText="🎈";b.style.left=rnd(10,160)+"px";b.style.top=rnd(10,160)+"px";b.style.cursor="pointer";
-b.onclick=()=>{score++;document.getElementById("ballScore").innerText=score;b.remove();}
-wrap.appendChild(b);setTimeout(add,1200);
-}
-add();
-}
-//10.数字拼图
-function renderPuzzle(box){
-box.innerHTML=`<h3>数字滑块拼图</h3><div style="display:grid;grid-template-columns:repeat(3,60px);gap:4px;margin:10px auto;width:fit-content;" id="puzzleBoard"></div>`;
-let arr=[1,2,3,4,5,6,7,8,""];arr.sort(()=>Math.random()-0.5);
-let board=document.getElementById("puzzleBoard");
-arr.forEach(n=>{let d=document.createElement("div");d.style.width="60px";d.style.height="60px";d.style.lineHeight="60px";d.style.background="#cce0ff";d.style.fontSize="24px";d.innerText=n;d.style.cursor="pointer";board.appendChild(d);})
-}
-//11.贪吃蛇（10分钟长时长）
-function renderSnake(box){
-box.innerHTML=`<h3>贪吃蛇｜方向键控制，10分钟长时长</h3><canvas id="snakeCanvas" width="240" height="240" style="background:#111;"></canvas><p>吃到食物变长，撞到边界游戏重置</p>`;
-let canvas=document.getElementById("snakeCanvas"),ctx=canvas.getContext("2d");
-let snake=[{x:3,y:3}],dx=1,dy=0,food={x:rnd(0,11),y:rnd(0,11)},run=true;
-function draw(){
-ctx.fillStyle="#111";ctx.fillRect(0,0,240,240);
-ctx.fillStyle="#42b983";snake.forEach(s=>ctx.fillRect(s.x*20,s.y*20,18,18));
-ctx.fillStyle="#ff4d4f";ctx.fillRect(food.x*20,food.y*20,18,18);
-let head={x:snake[0].x+dx,y:snake[0].y+dy};
-if(head.x<0||head.x>11||head.y<0||head.y>11||snake.some(s=>s.x==head.x&&s.y==head.y)){run=false;setTimeout(()=>{snake=[{x:3,y:3}];dx=1;dy=0;food={x:rnd(0,11),y:rnd(0,11)};run=true;},1000);return;}
-snake.unshift(head);
-if(head.x==food.x&&head.y==food.y){food={x:rnd(0,11),y:rnd(0,11)};}else snake.pop();
-}
-document.onkeydown = e => {
-if (!run) return;
-if(e.key=="ArrowUp"&&dy!=1){dx=0;dy=-1;}
-if(e.key=="ArrowDown"&&dy!=-1){dx=0;dy=1;}
-if(e.key=="ArrowLeft"&&dx!=1){dx=-1;dy=0;}
-if(e.key=="ArrowRight"&&dx!=0){dx=1;dy=0;}
-}
-setInterval(()=>{if(run)draw();},120);
-}
+    function endTest() {
+        clearInterval(AppState.currentTest.timer);
+        alert(`测试完成！\n当前总积分: ${AppState.score}`);
+        showPage('menu');
+    }
 
-refreshScore();
+    // ==================== 错题库模块 ====================
+    function addToWrongBook(q, myAns) {
+        const exists = AppState.wrongBook.some(item => item.q === q.q && item.myAns === myAns);
+        if (exists) return;
+        
+        AppState.wrongBook.unshift({
+            q: q.q,
+            correct: q.answers[0],
+            myAns: myAns,
+            date: new Date().toLocaleDateString()
+        });
+        
+        if (AppState.wrongBook.length > 50) AppState.wrongBook.pop();
+        updateUI();
+    }
+
+    function showWrongBook() {
+        showPage('wrong');
+    }
+
+    function renderWrongBook() {
+        const list = document.getElementById('wrongList');
+        const empty = document.getElementById('emptyWrong');
+        list.innerHTML = '';
+        
+        if (AppState.wrongBook.length === 0) {
+            empty.style.display = 'block';
+            return;
+        }
+        
+        empty.style.display = 'none';
+        AppState.wrongBook.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.className = 'wrong-item';
+            li.innerHTML = `
+                <button class="delete-btn" onclick="removeWrong(${index})">×</button>
+                <div class="q">${item.q}</div>
+                <div class="ans-row">
+                    <span class="my-a">❌ 你的答案: ${item.myAns}</span>
+                    <span class="correct-a">✅ 正确答案: ${item.correct}</span>
+                </div>
+                <div style="font-size:12px; color:#aaa; margin-top:5px; text-align:right;">${item.date}</div>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    function removeWrong(index) {
+        AppState.wrongBook.splice(index, 1);
+        updateUI();
+        renderWrongBook();
+    }
+
+    // ==================== 游戏模块 ====================
+    function startGame(type) {
+        const cost = (type === 'snake' || type === 'puzzle') ? 20 : 10;
+        if (AppState.score < cost) {
+            alert(`积分不足！需要 ${cost} 积分才能玩这个游戏。\n快去刷题赚取积分吧！`);
+            return;
+        }
+        
+        AppState.score -= cost;
+        updateUI();
+        
+        showPage('game');
+        AppState.game.type = type;
+        AppState.game.active = true;
+        
+        // 隐藏所有游戏容器
+        document.getElementById('gameCanvas').classList.add('hidden');
+        document.getElementById('diffGameContainer').classList.add('hidden');
+        document.getElementById('gameScoreBoard').classList.add('hidden');
+        
+        if (type === 'finddiff') {
+            initFindDiffGame();
+        } else {
+            document.getElementById('gameCanvas').classList.remove('hidden');
+            document.getElementById('gameScoreBoard').classList.remove('hidden');
+            
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            AppState.game.ctx = ctx;
+            AppState.game.canvas = canvas;
+            
+            if (type === 'snake') initSnakeGame();
+            else if (type === 'puzzle') initPuzzleGame();
+        }
+    }
+
+    function stopGame() {
+        stopGameLogic();
+        showPage('menu');
+    }
+
+    function stopGameLogic() {
+        AppState.game.active = false;
+        if (AppState.game.interval) clearInterval(AppState.game.interval);
+        
+        if (document.onkeydown) document.onkeydown = null;
+        
+        const canvas = document.getElementById('gameCanvas');
+        if (canvas) canvas.onclick = null;
+        
+        const diffCanvas = document.getElementById('diffCanvasRight');
+        if (diffCanvas) diffCanvas.onclick = null;
+    }
+
+    // --- 找不同游戏逻辑 ---
+    function initFindDiffGame() {
+        document.getElementById('gameTitle').textContent = '🔍 火眼金睛找不同';
+        document.getElementById('gameTip').textContent = '左右两图有3处不同，点击右图的不同之处';
+        document.getElementById('diffGameContainer').classList.remove('hidden');
+        
+        const leftCvs = document.getElementById('diffCanvasLeft');
+        const rightCvs = document.getElementById('diffCanvasRight');
+        const leftCtx = leftCvs.getContext('2d');
+        const rightCtx = rightCvs.getContext('2d');
+        
+        // 生成随机差异点 (3个)
+        const targets = [];
+        while(targets.length < 3) {
+            const x = Math.floor(Math.random() * 260) + 20;
+            const y = Math.floor(Math.random() * 260) + 20;
+            // 简单去重
+            let tooClose = false;
+            for(let t of targets) {
+                if (Math.abs(t.x - x) < 40 && Math.abs(t.y - y) < 40) tooClose = true;
+            }
+            if (!tooClose) targets.push({x, y, found: false});
+        }
+        AppState.game.diffTargets = targets;
+        AppState.game.diffFound = [];
+        
+        updateDiffProgress();
+        
+        // 绘制基础场景函数
+        function drawScene(ctx, isRight) {
+            // 背景
+            ctx.fillStyle = '#87CEEB'; // 天空蓝
+            ctx.fillRect(0, 0, 300, 300);
+            
+            // 草地
+            ctx.fillStyle = '#90EE90';
+            ctx.fillRect(0, 200, 300, 100);
+            
+            // 太阳 (左上)
+            ctx.fillStyle = '#FFD700';
+            ctx.beginPath();
+            ctx.arc(50, 50, 30, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 房子 (中间)
+            ctx.fillStyle = '#FF6B6B';
+            ctx.fillRect(100, 120, 100, 80); // 房体
+            ctx.beginPath(); // 屋顶
+            ctx.moveTo(90, 120);
+            ctx.lineTo(150, 60);
+            ctx.lineTo(210, 120);
+            ctx.fillStyle = '#8B4513';
+            ctx.fill();
+            
+            // 门
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(135, 160, 30, 40);
+            
+            // 树 (右边)
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(240, 150, 20, 50); // 树干
+            ctx.fillStyle = '#228B22';
+            ctx.beginPath();
+            ctx.arc(250, 130, 40, 0, Math.PI * 2); // 树冠
+            ctx.fill();
+            
+            // 云朵 (右上)
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(220, 40, 20, 0, Math.PI * 2);
+            ctx.arc(240, 50, 25, 0, Math.PI * 2);
+            ctx.arc(260, 40, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // --- 应用差异 ---
+            if (isRight) {
+                // 差异1: 太阳颜色变红
+                ctx.fillStyle = '#FF4500'; 
+                ctx.beginPath();
+                ctx.arc(50, 50, 30, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // 差异2: 房子门变成圆形
+                ctx.fillStyle = '#FF6B6B'; // 覆盖原来的矩形门
+                ctx.fillRect(135, 160, 30, 40);
+                ctx.fillStyle = '#8B4513';
+                ctx.beginPath();
+                ctx.arc(150, 180, 15, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 差异3: 树冠变小
+                ctx.fillStyle = '#90EE90'; // 覆盖原来的大树冠
+                ctx.beginPath();
+                ctx.arc(250, 130, 40, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = '#228B22';
+                ctx.beginPath();
+                ctx.arc(250, 130, 25, 0, Math.PI * 2); // 小树冠
+                ctx.fill();
+            }
+        }
+        
+        drawScene(leftCtx, false);
+        drawScene(rightCtx, true);
+        
+        // 绑定点击事件
+        rightCvs.onclick = function(e) {
+            if (!AppState.game.active) return;
+            
+            const rect = rightCvs.getBoundingClientRect();
+            // 考虑缩放
+            const scaleX = rightCvs.width / rect.width;
+            const scaleY = rightCvs.height / rect.height;
+            
+            const clickX = (e.clientX - rect.left) * scaleX;
+            const clickY = (e.clientY - rect.top) * scaleY;
+            
+            let hit = false;
+            AppState.game.diffTargets.forEach((t, idx) => {
+                if (t.found) return;
+                const dist = Math.sqrt((clickX - t.x)**2 + (clickY - t.y)**2);
+                if (dist < 30) {
+                    t.found = true;
+                    AppState.game.diffFound.push(t);
+                    hit = true;
+                    
+                    // 画圈标记
+                    rightCtx.strokeStyle = '#FF0000';
+                    rightCtx.lineWidth = 3;
+                    rightCtx.beginPath();
+                    rightCtx.arc(t.x, t.y, 25, 0, Math.PI * 2);
+                    rightCtx.stroke();
+                    
+                    // 左图也标记
+                    leftCtx.strokeStyle = '#FF0000';
+                    leftCtx.lineWidth = 3;
+                    leftCtx.beginPath();
+                    leftCtx.arc(t.x, t.y, 25, 0, Math.PI * 2);
+                    leftCtx.stroke();
+                }
+            });
+            
+            if (hit) {
+                updateDiffProgress();
+                if (AppState.game.diffFound.length === 3) {
+                    setTimeout(() => {
+                        alert("🎉 太厉害了！全部找出来了！\n奖励积分: 50分");
+                        AppState.score += 50;
+                        updateUI();
+                        stopGame();
+                    }, 500);
+                }
+            }
+        };
+    }
+    
+    function updateDiffProgress() {
+        const count = AppState.game.diffFound.length;
+        document.getElementById('diffProgressText').textContent = `已找到: ${count} / 3`;
+    }
+
+    // --- 贪吃蛇逻辑 ---
+    function initSnakeGame() {
+        document.getElementById('gameTitle').textContent = '🐍 贪吃蛇大作战';
+        document.getElementById('gameTip').textContent = '使用方向键控制移动，吃到红色方块得分';
+        
+        const ctx = AppState.game.ctx;
+        const cvs = AppState.game.canvas;
+        if (!ctx || !cvs) return;
+
+        const gridSize = 20;
+        const tileCount = cvs.width / gridSize;
+        
+        let snake = [{x: 10, y: 10}];
+        let food = {x: 15, y: 15};
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+        
+        document.getElementById('gameScoreBoard').textContent = '得分: 0';
+        
+        document.onkeydown = function(e) {
+            if (!AppState.game.active) return;
+            switch(e.key) {
+                case 'ArrowUp': if(dy !== 1) { dx=0; dy=-1; } break;
+                case 'ArrowDown': if(dy !== -1) { dx=0; dy=1; } break;
+                case 'ArrowLeft': if(dx !== 1) { dx=-1; dy=0; } break;
+                case 'ArrowRight': if(dx !== -1) { dx=1; dy=0; } break;
+            }
+        };
+        
+        AppState.game.interval = setInterval(() => {
+            if (!AppState.game.active) return;
+            
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                gameOver(score);
+                return;
+            }
+            for (let i=0; i<snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    gameOver(score);
+                    return;
+                }
+            }
+            
+            snake.unshift(head);
+            
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                document.getElementById('gameScoreBoard').textContent = '得分: ' + score;
+                AppState.score += 5;
+                updateUI();
+                food = {
+                    x: Math.floor(Math.random() * tileCount),
+                    y: Math.floor(Math.random() * tileCount)
+                };
+            } else {
+                snake.pop();
+            }
+            
+            ctx.fillStyle = '#2f3542';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+            
+            ctx.fillStyle = '#ff4757';
+            ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize-2, gridSize-2);
+            
+            ctx.fillStyle = '#7bed9f';
+            snake.forEach(part => {
+                ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize-2, gridSize-2);
+            });
+            
+        }, 150);
+        
+        function gameOver(finalScore) {
+            stopGameLogic();
+            alert(`游戏结束！\n本局得分: ${finalScore}\n获得奖励积分: ${Math.floor(finalScore/2)}`);
+            AppState.score += Math.floor(finalScore/2);
+            updateUI();
+            showPage('menu');
+        }
+    }
+
+    // --- 数字华容道逻辑 ---
+    function initPuzzleGame() {
+        document.getElementById('gameTitle').textContent = '🧩 数字华容道';
+        document.getElementById('gameTip').textContent = '点击数字块，将其移动到空白处，按顺序排列1-8';
+        
+        const ctx = AppState.game.ctx;
+        const cvs = AppState.game.canvas;
+        if (!ctx || !cvs) return;
+
+        const size = 130; 
+        const gap = 5;
+        
+        let tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+        for(let i=0; i<100; i++) {
+            let emptyIdx = tiles.indexOf(0);
+            let possibleMoves = [];
+            if (emptyIdx % 3 !== 0) possibleMoves.push(emptyIdx - 1);
+            if (emptyIdx % 3 !== 2) possibleMoves.push(emptyIdx + 1);
+            if (emptyIdx >= 3) possibleMoves.push(emptyIdx - 3);
+            if (emptyIdx < 6) possibleMoves.push(emptyIdx + 3);
+            
+            let move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+            [tiles[emptyIdx], tiles[move]] = [tiles[move], tiles[emptyIdx]];
+        }
+        
+        let moves = 0;
+        document.getElementById('gameScoreBoard').textContent = '步数: 0';
+        
+        function drawPuzzle() {
+            if (!AppState.game.active) return;
+            ctx.fillStyle = '#2f3542';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+            
+            for(let i=0; i<9; i++) {
+                let val = tiles[i];
+                if (val === 0) continue;
+                
+                let x = (i % 3) * size + gap;
+                let y = Math.floor(i / 3) * size + gap;
+                
+                ctx.fillStyle = '#1e90ff';
+                ctx.fillRect(x, y, size - gap*2, size - gap*2);
+                
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 40px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(val, x + (size-gap*2)/2, y + (size-gap*2)/2);
+            }
+        }
+        
+        if (cvs) {
+            cvs.onclick = function(e) {
+                if (!AppState.game.active) return;
+                
+                const rect = cvs.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+                
+                const col = Math.floor(clickX / size);
+                const row = Math.floor(clickY / size);
+                
+                if (col < 0 || col > 2 || row < 0 || row > 2) return;
+                
+                const clickedIdx = row * 3 + col;
+                const emptyIdx = tiles.indexOf(0);
+                
+                let isAdjacent = false;
+                if (Math.abs(clickedIdx - emptyIdx) === 1 && Math.floor(clickedIdx/3) === Math.floor(emptyIdx/3)) isAdjacent = true;
+                if (Math.abs(clickedIdx - emptyIdx) === 3) isAdjacent = true;
+                
+                if (isAdjacent) {
+                    [tiles[clickedIdx], tiles[emptyIdx]] = [tiles[emptyIdx], tiles[clickedIdx]];
+                    moves++;
+                    document.getElementById('gameScoreBoard').textContent = '步数: ' + moves;
+                    drawPuzzle();
+                    checkWin();
+                }
+            };
+        }
+        
+        function checkWin() {
+            const winState = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+            if (JSON.stringify(tiles) === JSON.stringify(winState)) {
+                setTimeout(() => {
+                    alert(`恭喜通关！\n用了 ${moves} 步\n奖励积分 50!`);
+                    AppState.score += 50;
+                    updateUI();
+                    stopGame();
+                }, 100);
+            }
+        }
+        
+        drawPuzzle();
+    }
 </script>
 </body>
 </html>

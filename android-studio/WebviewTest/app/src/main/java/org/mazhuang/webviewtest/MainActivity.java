@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
         webView.setVerticalScrollBarEnabled(false);
 
         // 禁止拖动网页
-        webView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return (event.getAction() == MotionEvent.ACTION_MOVE);
-            }
-        });
+//        webView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return (event.getAction() == MotionEvent.ACTION_MOVE);
+//            }
+//        });
 
         // 让当前 webView 处理页面跳转
         // https://developer.android.com/guide/webapps/webview.html#HandlingNavigation
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         webView.addJavascriptInterface(new WkBridge(), "WkBridge");
 
 
-        webView.loadUrl("https://mazhuang.org/");
+        webView.loadUrl("file:///android_asset/games.html");
     }
 
     private class WkBridge {
